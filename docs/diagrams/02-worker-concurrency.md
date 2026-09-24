@@ -1,5 +1,12 @@
 # Worker concurrency and genome state
 
+> **Not the lab's code, and not in this repository.** This diagram describes
+> `repeat-modeler-automation`, written in September 2026 to replace the lab's manual
+> RepeatModeler sessions and since split into its own repository. It is kept here because the
+> state machine is the clearest statement of what an 8–26 hour per-genome run demands. The lab
+> itself had none of this: a person opened a terminal per species and waited — see
+> [`../pipeline/detailed/02-stage-reference.md`](../pipeline/detailed/02-stage-reference.md).
+
 ## Every state a genome can be in
 
 State lives entirely in **directory names** under `$STATE_DIR`. Nothing is ever read to

@@ -1,8 +1,13 @@
 # Data contracts
 
-Every file format that passes between stages, in pipeline order. Examples are taken verbatim
-from files in this repository; where a format has a quirk that will bite you, it is called out
-in place.
+Every file format that passed between stages, in pipeline order. Examples are taken verbatim
+from files in [`../../../evidence/`](../../../evidence/); where a format has a quirk that
+matters, it is called out in place.
+
+None of these formats was ever specified anywhere by the lab. They are reconstructed from the
+code that reads and writes them and from the surviving files, which is why several of the
+"contract points" below are really findings — the format carries an assumption that nothing
+records.
 
 ```mermaid
 flowchart LR
@@ -48,7 +53,10 @@ accessions:
 ## 2. Gene annotation GFF3, with *D. melanogaster* names
 
 Standard 9-column GFF3. What makes it special to this pipeline is that gene symbols have been
-replaced with *D. melanogaster* ortholog names by the (uncommitted) stage 0b step.
+replaced with *D. melanogaster* ortholog names by the stage 0b renaming step — by one of two
+scripts that do not agree with each other, which is why this format is where the largest
+finding in the investigation lives (see
+[`04-gaps-and-provenance.md`](04-gaps-and-provenance.md), G4).
 
 ```
 NC_057927.1	Gnomon	gene	848845	850790	.	-	.	Name=Cyp12e1;ID=gene-G00000000064;Name_old=LOC6500252;dbxref=GeneID:6500252;gbkey=Gene;gene=LOC6500252;...
@@ -56,6 +64,13 @@ NC_057927.1	Gnomon	gene	848845	850790	.	-	.	Name=Cyp12e1;ID=gene-G00000000064;Na
 
 **Contract points**
 
+- **Two incompatible producers write this format, and you cannot tell them apart from the
+  file alone.** Ayush's `NEW_Step_5_…` rewrites `Name=`; Duy's `ReVamp_Final.py` rewrites
+  `ID=` (and `Parent=` to match), leaving `Name=` as it found it. Since downstream matching
+  keys on `Name=`, a `final_final` file only works at all because many annotations already
+  carry Dmel symbols in `Name=` from `source_gene_common_name` — and where they do not, the
+  gene is invisible to stage 3. Roughly 7% of orthologous genes are in that state in every
+  `final_final` file. See [`04-gaps-and-provenance.md`](04-gaps-and-provenance.md), G4.
 - `Name=` carries the *D. melanogaster* symbol; `Name_old=` preserves the original species
   identifier. Downstream matching keys on `Name=`.
 - A single gene may carry **several comma-separated symbols**:
@@ -63,10 +78,13 @@ NC_057927.1	Gnomon	gene	848845	850790	.	-	.	Name=Cyp12e1;ID=gene-G00000000064;Na
   stage 3a.
 - mRNA records carry `dmel_orthologs=` and `hog=N1.HOG…`, showing the ortholog assignment came
   from hierarchical orthogroups.
-- **Embedded literal tabs exist inside attribute values** in the committed example — NCBI
+- **Embedded literal tabs exist inside attribute values** in the surviving example — NCBI
   `model_evidence` and `product` text contains raw tabs rather than `%09`. Anything that splits
-  the line on tab and expects exactly 9 fields will see more. The committed scripts survive
-  this only because they index columns 0-8 from the left and never count fields.
+  the line on tab and expects exactly 9 fields will see more, and the file is invalid GFF3 by
+  that measure. The lab's scripts survive it only because they index columns 0-8 from the left
+  and never count fields. `ReVamp_Final.py` is the exception — it drops any line that does not
+  split into exactly 9 fields. The tabs were present in the lab's working copies and not in
+  the published Zenodo release, so they were introduced somewhere in between.
 
 ---
 
@@ -83,7 +101,7 @@ Cyp4g1
 **Contract points — both surprising**
 
 - **Every line beginning with `D` is skipped**, by both `repeatOpp.py` and `CleanAnnasse.py`.
-  This was presumably meant to drop a header or `Dmel\…` prefixed entries; in the committed
+  This was presumably meant to drop a header or `Dmel\…` prefixed entries; in the surviving
   file it silently discards five real entries: `Dvir\GJ21722`, `Dmoj\GI21254`, `Dvir\GJ21709`,
   `Dvir\GJ22648`, `Dvir\GJ20586`. Effective list length is **91, not 96**.
 - **Matching is substring, not exact** — `Rgene in fields[8]`. A short symbol therefore matches
@@ -103,7 +121,7 @@ score   div. del. ins.  sequence        begin   end        (left)   repeat      
  1079    7.0  0.0 15.2  NW_025319037.1        1     274 (9588158) C rnd-1_family-88   LTR/Pao             (993)    978     815     1
 ```
 
-Fields, 0-indexed after whitespace splitting — the indices the committed code actually uses:
+Fields, 0-indexed after whitespace splitting — the indices the lab’s code actually uses:
 
 | Idx | Field | Used by |
 |---|---|---|
@@ -123,7 +141,7 @@ Fields, 0-indexed after whitespace splitting — the indices the committed code 
 
 - Stage 4 skips any line yielding fewer than 14 whitespace fields, with a warning.
 - Column 10 is the one that matters analytically: it distinguishes `LTR/Gypsy` (a real TE) from
-  `Simple_repeat` and `Low_complexity` (not TEs). In the committed *D. ananassae* result
+  `Simple_repeat` and `Low_complexity` (not TEs). In the surviving *D. ananassae* result
   **69% of retained rows are `Simple_repeat` or `Low_complexity`**, and no stage filters them.
   See [`04-gaps-and-provenance.md`](04-gaps-and-provenance.md).
 - These files are large: 39 MB / 297,073 lines for *D. ananassae*.
@@ -136,7 +154,7 @@ Raw GFF3 lines copied verbatim from the annotation, restricted to `gene` rows ma
 target symbol. Not a valid standalone GFF3 — no `##gff-version` header.
 
 **Contract point:** contains duplicate rows by construction (166 rows / 91 unique in the
-committed example). Consumers must either de-duplicate or accept inflated counts.
+surviving example). Consumers must either de-duplicate or accept inflated counts.
 
 ---
 
@@ -173,7 +191,7 @@ reads it as `--te-hits`. Formally:
   anything else reading this file must do the same.
 - Column 1 duplicates the `.out` line's own query seqid. Stage 4 uses column 1 and ignores the
   in-line copy.
-- 29 such files exist in `pipeline-scripts-output/AnalysisForAll/output/`. **Their names are
+- 29 such files exist in `evidence/te-locating-run/AnalysisForAll/output/`. **Their names are
   not machine-parseable** — three are misspelled, and capitalisation of `ByTE`/`ByTe`/`ByT`
   varies. Do not glob on the suffix.
 
@@ -259,5 +277,6 @@ diagnostic for cross-species naming drift.
 | `--output-report` | Markdown: per-species table, Fisher's exact and Mann-Whitney U results, the bootstrap CI, the species-level descriptive comparison, and the pseudoreplication caveat in full |
 | `--plot-path` | Bar plot, `te_cyp_by_species.png` by default |
 
-Era 1's equivalent was a spreadsheet, `TEandTFdata.xls`, collected into
-`Spring26/RM2_RM_TFBS_Results/` *(OCR doc 04)*. It is not in this repository.
+The lab's equivalent was a spreadsheet, `TEandTFdata.xls`, collected into
+`Spring26/RM2_RM_TFBS_Results/` *(OCR doc 04)*. **It is not in the archive**, and neither is
+any CSV, report or plot — no output of stage 4 or stage 6 survives at all.

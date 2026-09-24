@@ -1,10 +1,13 @@
 # Following one species end to end
 
 The abstract version of the pipeline is in [the previous document](02-the-pipeline-in-six-stages.md).
-This one follows a single real species — ***Drosophila ananassae*** — through the files that
-are actually sitting in this repository, under `pipeline-scripts-output/`.
+This one follows a single real species — ***Drosophila ananassae*** — through the actual files
+the lab left behind, in
+[`../../../evidence/te-locating-run/`](../../../evidence/te-locating-run/).
 
-Every number below was measured from those files.
+Every number below was measured from those files. This is the closest thing the archive has to
+a specification: real inputs and the real outputs they produced, so each script can be checked
+against what it actually did rather than what it looks like it does.
 
 ## The journey in one picture
 
@@ -58,6 +61,12 @@ already relabelled so that *D. ananassae* genes carry their *D. melanogaster* or
 That relabelling is what makes cross-species comparison possible at all: without it, the same
 gene has a different name in every species. It contains **117 gene records**.
 
+> **The copy in the archive is truncated** — one chromosome, ending mid-line — so it is not
+> what the results below were made from; they span six chromosomes. `filtered.gff` *is*
+> consistent with the full file, and re-running the last two steps from it reproduces the
+> archived outputs exactly. The truncation looks like a copy that was interrupted, not like
+> anything the pipeline did.
+
 The third input is the target list, `AnalysisForAll/Reg_Gene_Full.txt` — **96 Cyp gene
 symbols**, one per line, `Cyp18a1`, `Cyp314a1`, `Cyp4g1` and so on.
 
@@ -74,8 +83,8 @@ rows only **91 are unique**, covering **57 distinct gene names**.
 This duplication is not cosmetic: it propagates. Every duplicated gene row causes the next
 step to re-emit all of that gene's TE hits again. The stage 4 script knows this and
 de-duplicates on the way in — its own documentation notes the format *"commonly repeats
-identical rows 2-3x"* — but any count taken from the intermediate files directly will be
-inflated.
+identical rows 2-3x"* — so whoever wrote that script **observed the symptom without tracing
+the cause**. Any count taken from the intermediate files directly is inflated.
 
 ### Step 2 — pair genes with TEs (`Locate_TE.py`)
 
@@ -101,8 +110,10 @@ Chromosome, gene, then the repeat: an *LTR/Gypsy* element, 19 bp of it, sitting 
 end of *Cyp12e1*.
 
 This file is the **handoff point**. It is exactly the format stage 4 expects as `--te-hits`,
-and it is where the original lab pipeline ends and the analysis code in `analysis-pipeline/`
-begins.
+and it is where the hand-run half of the pipeline ends and the analysis code in
+`evidence/analysis-scripts/` begins. It is also the last point at which anything is
+recoverable: the 3 kb rule and the paralog collapse are both baked in by now, written into the
+file rather than recorded as parameters.
 
 ### One thing to know before trusting the counts
 
@@ -148,10 +159,17 @@ three times.
 You can see the cost of that in the filenames themselves:
 `D_secheliaGenesAffectedByT.txt`, `D_athabascaGenesAfffectedByTE.txt`,
 `D_arawakanaGenesAffectedByTe.txt`. Twenty-nine hand-typed filenames, three of them
-misspelled — which is the clearest possible argument for the automation that
-`repeat-modeler-automation/` brought to stage 1, and that stage 3 never got.
+misspelled. Two more — `D_eugracilisGenesAffectedByTE.txt` and
+`D_paulistorumGenesAffectedByTE.txt` — are **zero bytes**: the file was created and the run
+produced nothing, and nothing in the archive records why.
+
+The 29 are not even all the same pipeline. Nineteen were built from one gene-renaming script
+and seven from the other, and the two do not agree —
+[`../../scripts/06-final-final-gff.md`](../../scripts/06-final-final-gff.md) works out which
+is which, and what it costs.
 
 ## Next
 
 - [`../detailed/02-stage-reference.md`](../detailed/02-stage-reference.md) — the exact commands
 - [`../detailed/03-data-contracts.md`](../detailed/03-data-contracts.md) — every file format above, specified
+- [`../detailed/04-gaps-and-provenance.md`](../detailed/04-gaps-and-provenance.md) — what all of this means for the numbers

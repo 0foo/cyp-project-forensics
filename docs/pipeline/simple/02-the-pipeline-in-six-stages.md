@@ -1,7 +1,72 @@
-# The pipeline in six stages
+# The pipeline, stage by stage
 
-One stage per section. Each says what goes in, what comes out, and roughly how long it takes.
-Exact commands and file formats are in [`../detailed/02-stage-reference.md`](../detailed/02-stage-reference.md).
+One stage per section — seven of them, because the preparatory step that everything depends
+on is numbered 0. Each says what went in, what came out, and roughly how long it took.
+Exact commands, file formats and the evidence behind each claim are in
+[`../detailed/02-stage-reference.md`](../detailed/02-stage-reference.md).
+
+---
+
+## Stage 0 — Give every species' genes *D. melanogaster* names
+
+**In:** a published annotation for the species, plus an orthogroup table.
+**Out:** the same annotation with gene identifiers replaced by *D. melanogaster* gene
+symbols. **Time:** about ten minutes per species.
+
+Nothing in this pipeline can compare species until this has happened. A *D. arizonae* gene is
+called `gene-G00000000002` and the *D. ananassae* gene that does the same job is called
+something else entirely; only once both are relabelled `Myo81F` can a Cyp gene list written in
+*D. melanogaster* names match anything, in any species.
+
+The orthology itself was not computed here — it comes with the published annotations, as
+`hog=N1.HOG…` attributes. All this stage does is look up each gene's orthogroup and write the
+corresponding *D. melanogaster* symbol in its place.
+
+```mermaid
+flowchart TD
+    GFF["published annotation<br/>genes named gene-G000…"] --> R
+    HOG["HOG table<br/>orthogroup → each species' genes"] --> R
+    DMEL["HOG → D. melanogaster symbol"] --> R
+    R["rename every gene"]
+    R --> OUT["annotation with<br/>Name=Cyp12e1, ID=Myo81F, …"]
+```
+
+### Two people wrote this step, twice, and the results differ
+
+This is the single most consequential thing the investigation found, so it is worth stating
+plainly here rather than leaving it to the reference documents.
+
+| | **Duy** | **Ayush** |
+|---|---|---|
+| Script | `ReVamp_Final.py` | `NEW_Step_5_Replace_gff_Names_with_Dmelanogaster_1_9.py` |
+| Dataset folder | `Gff_Dataset#2` (7/9/2026) | `Gff_Dataset#1` (5/7/2026) |
+| Output files | `change_<SPECIES>_final_final.gff` | `<SPECIES>_final_withDmelNames.gff` |
+| How it renames | raw `str.replace` over each whole line, once per gene | parses the attribute column and rewrites fields |
+| What it rewrites | `ID=` and `Parent=` | `Name=` |
+
+They were written months apart by two people solving the same problem, and **nothing in the
+archive shows anyone ever choosing between them**. The lab log describes both without ranking
+them; the lab notebook's step-by-step procedure points at Duy's.
+
+**Duy's version silently loses genes.** Where an orthogroup cell lists more than one gene, the
+table stores it quoted and space-separated — `"gene-G00000006376, gene-G00000006377"` — and
+`ReVamp_Final.py` splits it on a bare comma. Neither fragment then matches anything in the
+annotation, so *no* gene in that cell gets renamed. For *D. arizonae* that is **788 of 11,063
+orthologous genes, about 7%**. Ayush's script parses the same cells correctly.
+
+Because the genes that share an orthogroup cell are exactly the ones a species has several
+copies of, the losses are not random: they land on multi-copy Cyp clusters. Run the same
+*D. ananassae* data through both and Duy's version finds 57 Cyp gene loci where Ayush's finds
+91, and two genes — *Cyp28a5* and *Cyp6a19* — disappear entirely.
+
+**And both versions were actually used.** Of the 29 finished species tables, **19 were built
+from Duy's output and 7 from Ayush's** (the other three cannot be determined — two are empty
+files and one is *D. melanogaster*, which needs no renaming). So the cross-species comparison
+at stage 6 sets 19 species whose Cyp gene sets are systematically short against 7 whose are
+not — and the difference tracks gene family size, which is the property the study is about.
+
+How each table was attributed, and the full per-gene damage, is in
+[`../../scripts/06-final-final-gff.md`](../../scripts/06-final-final-gff.md).
 
 ---
 
@@ -30,10 +95,17 @@ Two things about this stage drive the whole project's design:
 - **It is per-species and embarrassingly parallel.** Nothing about species A's run depends on
   species B's, so the only sane way to process dozens of genomes is to run several at once.
 
-Originally this was done by hand: open a terminal, start an interactive container, type the
-two commands, wait a day, repeat for the next species *(OCR docs 01, 04)*. The
-`repeat-modeler-automation/` directory in this repository replaces that with workers that
-claim genomes from a shared directory and survive reboots.
+This was done by hand, throughout: open a terminal, start an interactive container, type the
+two commands, wait a day, repeat for the next species *(OCR docs 01, 04)*. The container
+script that started each session,
+[`spinContainer.sh`](../../../evidence/lab-scripts/shell/spinContainer.sh), survives and
+matches its photograph exactly. Because it mounts only the current species folder, a second
+species meant a second terminal and the whole sequence again.
+
+(In September 2026 this was rebuilt as an unattended worker pair,
+`repeat-modeler-automation`. That code is not the lab's and lives in a separate repository;
+it is described in [`../../scripts/01-repeat-modeler-automation.md`](../../scripts/01-repeat-modeler-automation.md)
+because it is the clearest account of what this stage had to cope with.)
 
 ---
 
@@ -55,18 +127,18 @@ flowchart LR
     MASK --> OUT[".out table<br/>every TE copy, with coordinates"]
 ```
 
-**This stage is automated**, in the same `repeat-modeler-automation/` workers that run stage 1.
-Set `RUN_MASKER=1` and each genome is masked straight after its library is built, in the same
-job directory — which is exactly how the lab did it by hand *(OCR doc 05: the library "should
+RepeatMasker ran **in the same per-species folder as RepeatModeler**, so the library was
+already sitting there and nothing had to be copied — the write-up says so explicitly, and the
+detail is what makes the rest of the procedure make sense *(OCR doc 05: the library "should
 already be there from when we ran RepeatModeler")*.
 
-The two stages keep separate state markers, so they restart independently: turning masking on
-later re-runs only RepeatMasker over genomes that were already modelled, and a failed mask
-never costs you the day-long modelling run that produced the library.
-
-The lab's original script for this, `runMasker.sh`, was never committed and its exact flags are
-known only from a handwritten paraphrase *(OCR doc 02)*. The automation does not reproduce it
-line for line; it runs the same tool with the same custom library.
+> **This is the one stage where the evidence conflicts.** A script called `runMasker.sh` has
+> been recovered, and it does not match what the lab notebook and the write-up both describe.
+> In full it is one line — `RepeatMasker -lib <a gene annotation GFF>` — with no repeat
+> library, no genome FASTA and no `-pa`. As saved it could not have produced anything. The
+> notebook and the write-up agree with each other and with the shape of the surviving output
+> files, so that is what is taken as the real stage 2; what the recovered file was for is an
+> open question. See [`../detailed/02-stage-reference.md`](../detailed/02-stage-reference.md).
 
 ---
 
@@ -102,11 +174,15 @@ as affecting a gene if it falls **within the gene's span extended by 3,000 base 
 end**. That window is meant to catch elements sitting in the promoter, which is exactly where
 the *Cyp6g1* / *Accord* case happened.
 
-Historically these three scripts were run **by hand in VS Code**, once per species: open the
-script, paste a file path into a specific line, save, click run — three times, with a
-different path each time *(OCR docs 02, 05, 06)*. The hardcoded Windows paths still sitting at
-the top of the committed scripts are the residue of that. Twenty-nine species were completed
-this way.
+These three scripts were run **by hand in VS Code**, once per species: open the script, paste
+a file path into a specific line, save, click run — three times, with a different path each
+time *(OCR docs 02, 05, 06)*. The hardcoded Windows paths still sitting at the top of the
+surviving scripts are the residue of that, and the archive preserves the cycle directly:
+`Locate_TE.py` exists twice, differing in exactly two lines, both of them paths — one copy set
+up for *D. ananassae*, the other for *D. melanogaster*.
+
+Twenty-nine species were completed this way. Three of the twenty-nine output filenames are
+misspelled, which is the cost of the method showing through.
 
 ---
 
@@ -153,10 +229,11 @@ person can see the TEs, the Cyp genes and the predicted binding sites lined up a
 chromosome. This is how you catch the annotation being wrong in ways statistics will not tell
 you about.
 
-This stage is a person clicking, not a script. The procedure — open new genome, choose the
-FASTA adapter, name the assembly after the species, then add the track — is recorded in the
-lab notebook *(OCR doc 02)* and the write-up *(OCR doc 05)*. Sessions were saved for three
-species: *D. melanogaster*, *D. simulans* and *D. sechellia* *(OCR docs 03b, 04)*.
+This stage is a person clicking, not a script, and **nothing of it survives but the
+procedure**: open new genome, choose the FASTA adapter, name the assembly after the species,
+then add the track — recorded in the lab notebook *(OCR doc 02)* and the write-up
+*(OCR doc 05)*. Sessions were saved for three species only: *D. melanogaster*, *D. simulans*
+and *D. sechellia* *(OCR docs 03b, 04)*. None of the saved sessions is in the archive.
 
 ---
 
@@ -202,7 +279,7 @@ report generated says so in plain language rather than burying it.
 
 ## Next
 
-- [Following one species](03-following-one-species.md) — the same six stages, with the real
-  files from this repository
+- [Following one species](03-following-one-species.md) — the same path, with the real
+  files from the archive
 - [`../detailed/02-stage-reference.md`](../detailed/02-stage-reference.md) — the exact
   commands and parameters for each stage

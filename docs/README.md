@@ -1,47 +1,69 @@
 # Documentation
 
-Start here.
+This is the written output of the investigation: what the lab's pipeline did, how that was
+established, and what could not be established.
+
+None of it is a manual. The pipeline is not here and is not meant to be run from here — a
+cleaned, runnable version lives in the separate `cyp-te-pipeline` repository. What is here is
+a reconstruction: read out of the lab's code, measured from the lab's data, transcribed from
+photographs, and in a few places verified by re-running a step and diffing the result against
+what the lab produced.
 
 ## Start here
 
-- **Just want to run something?** → [`commands.md`](commands.md). Every command in the project
-  on one page, with what it does and what it leaves behind.
-- **New to the project?** → [`pipeline/simple/01-what-it-does.md`](pipeline/simple/01-what-it-does.md).
-  The research question, and the whole pipeline on one flow chart.
-
-## The two views
-
-Documentation here is organised along two axes: **how deep** (simple vs detailed) and **what
-it describes** (the pipeline as a whole vs individual scripts).
-
-| | The pipeline as a whole | Individual scripts |
-|---|---|---|
-| **Just the commands** | [`commands.md`](commands.md) | |
-| **Quick overview, with flow charts** | [`pipeline/simple/`](pipeline/simple/) | [`simple/`](simple/) |
-| **Detailed reference** | [`pipeline/detailed/`](pipeline/detailed/) | [`deep/`](deep/) |
-| **Diagrams** | [`diagrams/`](diagrams/) | |
-
-**[`pipeline/`](pipeline/) is the current focus and the most complete.** It documents the path
-a genome takes from raw FASTA to statistical verdict: the six stages, what each consumes and
-produces, the formats that join them, and what is missing.
-
-**[`deep/`](deep/) covers individual scripts** line by line — the worker automation, the
-TE-locating scripts, the GFF3 builder, the comparison scripts and the statistics.
-
-**[`../OCR docs/`](../OCR%20docs/)** holds transcriptions of the seventeen archive photographs
-that record the stages which were never committed to code. Pipeline documentation cites these
-by number, e.g. *(OCR doc 04)*.
-
-## The short version of what you will find
-
-- The pipeline has **six stages**, plus one preparatory step: relabelling gene annotations
-  with *D. melanogaster* ortholog names, which produces the `final_final` GFFs. Its code was
-  recovered into `to_organize/` (not yet committed) and re-run — see
-  [`deep/06-final-final-gff.md`](deep/06-final-final-gff.md).
-- Stage 1 takes **8-26 hours per genome**, which is why it looks like infrastructure while
-  everything else looks like scripts.
-- Everything funnels through **one small file format** between stages 3 and 4 — that is the
-  place to join the pipeline if you are starting from your own data.
-- There is a list of **known defects and unresolved questions** in
+- **The pipeline in one page** →
+  [`pipeline/simple/01-what-it-does.md`](pipeline/simple/01-what-it-does.md). The research
+  question and the whole chain on one flow chart.
+- **What is wrong with it** →
   [`pipeline/detailed/04-gaps-and-provenance.md`](pipeline/detailed/04-gaps-and-provenance.md).
-  Read it before quoting any number this pipeline produces.
+  Read this before quoting any number this pipeline produced.
+- **What physically exists** → [`../evidence/README.md`](../evidence/README.md).
+
+## How this is organised
+
+| Directory | What it holds |
+|---|---|
+| [`pipeline/`](pipeline/) | **The main account.** The pipeline as a whole — the path a genome took from raw FASTA to statistical verdict. A `simple/` tier for orientation and a `detailed/` tier for reference |
+| [`scripts/`](scripts/) | Individual scripts read line by line, with their defects called out in place |
+| [`diagrams/`](diagrams/) | Mermaid flow charts, extracted so they can be read on their own |
+| [`ocr/`](ocr/) | Transcriptions of the seventeen archive photographs. Cited throughout as *(OCR doc 04)* and so on |
+| [`commands.md`](commands.md) | Every command the lab is known to have run, and every command run during the investigation to check it |
+| [`superseded/`](superseded/) | Earlier, less complete reconstructions. Kept because the record of how the understanding developed is itself evidence |
+
+## How claims are sourced
+
+Four kinds of statement appear here, and they are kept distinct:
+
+- **Read from the lab's code.** Line references like `ReVamp_Final.py:152` point at files in
+  [`../evidence/`](../evidence/) and are checkable.
+- **Measured from the lab's data.** Counts and percentages were computed from the files in
+  `evidence/te-locating-run/` and `evidence/lab-data/`, read-only.
+- **Transcribed from a photograph.** Marked with the transcription it came from, e.g.
+  *(OCR doc 02)*. Several stages of the pipeline exist *only* in the photographs.
+- **Reproduced.** A few claims were established by copying a script outside the repository,
+  changing only its paths, running it, and diffing the output against the lab's own. Those
+  say so and give the diff.
+
+Where behaviour is inferred rather than established, the text says so.
+
+## What the investigation found, in five lines
+
+- The chain behind the `change_<SPECIES>_final_final.gff` files is fully reconstructed and
+  verified — re-running it on *D. arizonae* reproduces the lab's file line for line.
+- Two people wrote two incompatible versions of the gene-renaming step. The 29 finished
+  species tables are a mix of both, and one version silently drops about 7% of orthologous
+  genes.
+- About 69% of what the pipeline counts as "TE burden" is simple repeats and low-complexity
+  sequence, not transposable elements. Nothing filters on repeat class.
+- The TE-to-gene window is a containment test, not an overlap test, so long elements
+  straddling the window edge — including elements the size of the *Accord* insertion that
+  motivates the whole study — are dropped.
+- Parts of the chain are gone for good: the `config.py` behind the orthogroup steps, the
+  original `Dmel_output.tsv`, and a page of the lab log recording per-species family counts.
+
+## A note on stage numbering
+
+The main account in [`pipeline/`](pipeline/) numbers the stages **0 through 6**, counting
+input preparation as stage 0. The older documents in
+[`superseded/simple/`](superseded/simple/) number four stages instead, and their numbers do
+not line up. Where the two disagree, `pipeline/` is the one to trust.

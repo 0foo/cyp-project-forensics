@@ -1,12 +1,13 @@
 # Pipeline documentation
 
-This directory documents **the pipeline as a whole** — the path a *Drosophila* genome takes
-from a raw FASTA file to a statistical verdict about transposable elements and Cyp genes.
+This directory reconstructs **the pipeline as a whole** — the path a *Drosophila* genome
+took from a raw FASTA file to a statistical verdict about transposable elements and Cyp
+genes.
 
-It deliberately does *not* document individual scripts. Where a stage is implemented by a
-script, this documentation says what the stage consumes, what it produces, and what it
-guarantees to the next stage. Line-by-line coverage of the scripts themselves belongs in
-[`docs/deep/`](../deep/) and is a separate job.
+It is an account of what happened, not a manual. Where a stage was implemented by a script,
+this documentation says what the stage consumed, what it produced, and what it guaranteed to
+the next stage. Line-by-line coverage of the scripts themselves is in
+[`docs/scripts/`](../scripts/).
 
 ## The two tiers
 
@@ -17,11 +18,11 @@ journey through it looks like. No code, no file formats.
 | Doc | Covers |
 |---|---|
 | [01-what-it-does.md](simple/01-what-it-does.md) | The research question and the whole pipeline on one flow chart |
-| [02-the-pipeline-in-six-stages.md](simple/02-the-pipeline-in-six-stages.md) | Each stage in plain language, with its own small flow chart |
+| [02-the-pipeline-in-six-stages.md](simple/02-the-pipeline-in-six-stages.md) | Each stage in plain language, with its own small flow chart — including stage 0, where two people's scripts diverge |
 | [03-following-one-species.md](simple/03-following-one-species.md) | One real species end to end, with the real filenames and real numbers |
 
-**[`detailed/`](detailed/) — the reference.** For someone who has to run, modify, repair or
-extend the pipeline.
+**[`detailed/`](detailed/) — the reference.** For someone who has to establish exactly what
+a stage did, what format it emitted, or why a number came out the way it did.
 
 | Doc | Covers |
 |---|---|
@@ -34,14 +35,19 @@ extend the pipeline.
 
 Three kinds of source, and this documentation keeps them distinct:
 
-- **Code in this repository** — `repeat-modeler-automation/`, `pipeline-scripts-output/`,
-  `analysis-pipeline/`. Statements sourced here are checkable.
+- **The lab's code, in [`../../evidence/`](../../evidence/)** — `lab-scripts/`,
+  `te-locating-run/`, `analysis-scripts/`. Statements sourced here are checkable against the
+  files.
 - **Real data in this repository** — the 29 completed species outputs and the *D. ananassae*
-  worked example under `pipeline-scripts-output/`. Numbers quoted in these documents were
+  worked example under `evidence/te-locating-run/`. Numbers quoted in these documents were
   measured from those files.
-- **The archive photographs**, transcribed in [`OCR docs/`](../../OCR%20docs/). These are the
-  only record of the stages that were never committed. Anything sourced from them is marked
-  with the transcription document it came from, e.g. *(OCR doc 02)*.
+- **The archive photographs**, transcribed in [`docs/ocr/`](../ocr/). For several stages
+  these are the only record that survives. Anything sourced from them is marked with the
+  transcription document it came from, e.g. *(OCR doc 02)*.
 
-Where a stage exists only in the photographs and has no code here, the documentation says so
-rather than describing it as though you could run it.
+A fourth kind appears occasionally: **reproduced**, where a step was re-run from a path-only
+copy outside the repository and its output diffed against the lab's own. Those passages say
+so and give the result.
+
+Where a stage exists only in the photographs and no code survives, the documentation says so
+rather than describing it as though it were available.

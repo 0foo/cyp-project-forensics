@@ -64,7 +64,7 @@ flowchart LR
     style N1 fill:#f5f5f5,stroke-dasharray: 3 3
 ```
 
-> The three files as committed are named `compare_te_cyp_exposure 1 1.py`,
+> The three files as delivered are named `compare_te_cyp_exposure 1 1.py`,
 > `compare_te_cyp_cncc 1 1.py` and `compare_te_cyp_xenobiotic 1 1.py`. **The imports cannot
 > resolve against those names.** Rename them to drop the suffix before running anything.
 

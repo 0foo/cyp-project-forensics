@@ -1,241 +1,221 @@
 # Commands
 
-Everything you can actually run in this repository, what it does, and what it leaves behind.
-One page. If you want the reasoning behind any of it, follow the links at the bottom.
+Two lists. The first is **what the lab ran** — reconstructed from the photographs, the shell
+history and the scripts themselves, and useful because several of those commands are the only
+record of a stage. The second is **what was run during this investigation** to check the
+first, kept so the checks can be repeated.
 
-**Quick orientation.** The project turns fly genomes into an answer about transposable
-elements near Cyp genes. It does that in three groups of commands: one that chews on genomes
-for hours (`repeat-modeler-automation/`), one that pairs TEs with genes
-(`pipeline-scripts-output/`), and one that merges and compares (`analysis-pipeline/`).
-
----
-
-## 1. The genome workers — `repeat-modeler-automation/`
-
-Runs RepeatModeler and then RepeatMasker over a directory of gzipped genomes. This is the
-slow part: **8–26 hours per genome**, sometimes longer. Everything here is configured by
-`rmodeler.conf` — there are no command-line options and no environment variables.
-
-### Setting up, once
-
-```bash
-cd repeat-modeler-automation
-cp rmodeler.conf.example rmodeler.conf
-$EDITOR rmodeler.conf              # set IN_DIR, WORK_DIR, OUT_DIR, STATE_DIR, LOG_DIR
-docker pull dfam/tetools:latest    # pull before starting workers, not during
-```
-
-### Running it
-
-| Command | What it does |
-|---|---|
-| `./worker.sh` | Runs **one** worker in the foreground. Use this first — you see errors immediately |
-| `./rm-manager.sh start` | Launches `WORKERS` workers as background daemons |
-| `./rm-manager.sh status` | Who is running, how far along the queue is, which containers are live |
-| `./rm-manager.sh stop` | Stops every worker gracefully |
-| `./rm-manager.sh` | Same as `status` — the safe default |
-| `./worker.sh --help` | Prints the usage block from the top of the script |
-
-`start` is safe to run again: slots already running are left alone and only dead ones are
-refilled. Raising `WORKERS` and re-running `start` just adds workers.
-
-### Stopping
-
-```bash
-./rm-manager.sh stop     # SIGTERM — the right way
-kill <pid>               # same thing, for a worker you started by hand
-```
-
-**Never `kill -9` a worker.** A graceful stop finishes cleanly: it stops the container,
-releases the genome without marking it failed, and that genome is simply picked up again next
-time. A hard kill orphans claims and containers — recoverable on the next startup, but
-`status` lies to you until then.
-
-`stop` returns as soon as the signals are sent. Containers take up to `STOP_GRACE` seconds to
-actually disappear; watch `docker ps` if you need to know when the machine is idle.
-
-### Watching progress
-
-```bash
-./rm-manager.sh status                 # the summary
-tail -f $LOG_DIR/<sample>.log          # RepeatModeler output for one genome
-tail -f $LOG_DIR/<sample>.masker.log   # RepeatMasker output for one genome
-docker ps --filter label=rmworker.sample
-```
-
-### Redoing work
-
-All progress is recorded as **empty files whose names are genome names**, so you manage it
-with `ls` and `rm`:
-
-```bash
-ls $STATE_DIR/done    | wc -l     # genomes modelled
-ls $STATE_DIR/masked  | wc -l     # genomes masked
-ls $STATE_DIR/failed              # what went wrong
-ls -l $STATE_DIR/claimed          # what is running right now, and since when
-
-rm $STATE_DIR/masked/<sample>     # redo only the RepeatMasker run (keeps the library)
-rm $STATE_DIR/done/<sample> $STATE_DIR/masked/<sample>    # redo the genome from scratch
-rm $STATE_DIR/failed/*            # retry everything that failed, on the next pass
-```
-
-> **Do not delete anything from `claimed/` while workers are running.** That makes a live
-> genome look available and a second worker will start a duplicate run in a directory already
-> in use. Stop the workers first.
-
-### What you get
-
-| File | What it is |
-|---|---|
-| `$OUT_DIR/<sample>-families.fa` | The repeat library for that species |
-| `$OUT_DIR/<sample>.rm.out` | **The TE annotation table — this is what the rest of the pipeline needs** |
-| `$OUT_DIR/<sample>.rm.tbl` | RepeatMasker's summary |
-| `$OUT_DIR/<sample>.rm.masked.fa` | Soft-masked genome, only when `KEEP_MASKED_FASTA=1` |
-
-### The settings you will actually change
-
-| Setting | Meaning |
-|---|---|
-| `IN_DIR` | Where the `*.fna.gz` genomes are |
-| `OUT_DIR` / `STATE_DIR` / `LOG_DIR` / `WORK_DIR` | Where results, progress, logs and scratch go. `STATE_DIR` and `WORK_DIR` **must be local disk, not NFS** |
-| `WORKERS` / `THREADS` | Total cores used ≈ `WORKERS × THREADS`. On a 24-core box, 4 × 6 is sane |
-| `RUN_MASKER` | `1` = run RepeatMasker after RepeatModeler. Safe to turn on later — already-modelled genomes are re-masked without being re-modelled |
-| `LTRSTRUCT` | `1` adds `-LTRStruct`. Roughly doubles wall time and disk |
-| `RETRY_FAILED` | `1` = re-attempt genomes marked failed |
-| `KEEP_WORK` | `1` = keep the scratch directories on success (they run 20–80 GB per genome) |
-
-Both scripts refuse to start (exit 2) if `rmodeler.conf` is missing, if a setting is missing,
-if a name is misspelled, or if a value is nonsense. That is deliberate — workers share
-directories and must agree about them.
+Nothing on this page is an instruction to run the pipeline. For that, see the separate
+`cyp-te-pipeline` repository.
 
 ---
 
-## 2. Pairing TEs with Cyp genes — `pipeline-scripts-output/`
+# Part 1 — What the lab ran
 
-Three short Python scripts, run in order. **They take no arguments.** File paths are
-hardcoded at the top of each file and must be edited before each run — open the script, change
-the paths, run it.
+## Building the orthogroup table
 
-```bash
-cd pipeline-scripts-output
-python3 repeatOpp.py        # annotation GFF + Cyp gene list  -> filtered.gff
-python3 Locate_TE.py        # filtered.gff + RepeatMasker .out -> GenesAffectedByTEs.txt
-python3 CleanAnnasse.py     # tidies column 2                  -> DAnasse_TE_Cyp.txt
+Known only from `evidence/lab-environment/bash_history`. OrthoFinder was run over the twelve
+species' proteomes; its results directory (`OrthoFinder/Results_Mar29_1/Orthogroups_Genes/`)
+was then processed by a series of scripts:
+
+```
+python Grab_data_Atallah_12_2.py        # and _12_3.py, _12.py
+python Rewrite_gene_names.py
+python Remove_duplicates_Atallah.py
+python D:/CYP_Gene_Project/04_24/04_22/All_Input/Bulk_gffread.py
 ```
 
-| Script | Edit these lines before running |
-|---|---|
-| `repeatOpp.py` | `GFF` (the species annotation), `rgFile` (the Cyp gene list) |
-| `Locate_TE.py` | `cypGene` (the `filtered.gff` just produced), `TEs` (the RepeatMasker `.out`) |
-| `CleanAnnasse.py` | `toClean` (the file just produced), `aliasToFind` (the Cyp gene list) |
+> **None of those four scripts exist anywhere in this repository.** The history is the only
+> evidence they were ever written. The scripts in
+> `evidence/lab-scripts/orthogroup-tables/` (`Step_1_…` through `Step_4_…`) do the same kind
+> of work and produced the tables that survive, but they are not the same files, and the
+> shell history shows them being run from a WSL mount of a Windows `D:` drive.
 
-Rename the final output to `D_<species>GenesAffectedByTE.txt` — that is the name the next
-stage expects, and the 29 completed species in `AnalysisForAll/output/` follow it.
+The surviving `Step_*` scripts take no arguments either:
 
-A TE counts as affecting a gene if it falls inside the gene's span **extended by 3,000 bp at
-each end**. That number is hardcoded in `Locate_TE.py`.
-
----
-
-## 3. Merging and comparing — `analysis-pipeline/`
-
-> **Rename the files first.** They are committed as `build_tfbs_te_gff 1.py`,
-> `compare_te_cyp_exposure 1 1.py` and so on. Two of the comparison scripts do
-> `import compare_te_cyp_exposure`, which cannot resolve against a name with spaces in it —
-> **as committed, they do not run.** Drop the ` 1` / ` 1 1` suffixes and everything works.
-
-### Build one combined annotation per species
-
-```bash
-python3 build_tfbs_te_gff.py \
-    --te-file  D_suzukiiGenesAffectedByTE.txt \
-    --gff      dsuzukii_annotation.gff3 \
-    --fasta    dsuzukii_genome.fa \
-    --output   combined_cyp_annotation_suzukii.gff3
+```
+python Step_1_Replace_RNA_identifiers_with_gene_names_Redo.py
+python Step_2_Remove_Duplicate_gene_names_10_31.py     # needs a config.py that was not kept
+python Step_3_Count_CYP_Genes_Copy_10_31.py
+python Step_4_Extract_CYP_Genes.py
 ```
 
-| Option | Use it when |
-|---|---|
-| `--skip-tfbs` | You have no MEME Suite, or don't need motif scanning. **Note:** the CncC comparison below will then have nothing to work with for this species |
-| `--fimo-path /path/to/fimo` | `fimo` is installed but not on `PATH` |
-| `--fimo-via-docker` | You would rather not install MEME Suite at all |
-| `--sequence-source ncbi` | You don't have the genome FASTA locally — sequence windows are fetched from NCBI by accession |
-| `--bgzip-index` | You want to load the result into JBrowse 2 |
-| `--config species_config.ini --species suzukii` | You'd rather keep per-species paths in a file than on the command line |
+## Stage 1 — RepeatModeler
 
-Needs `fimo` (MEME Suite) unless you pass `--skip-tfbs`:
-`conda install -c bioconda meme`, then check with `fimo --version`.
-
-### Run the comparisons
-
-All three read the same config file — one `[section]` per species, each with `gff =` and
-`exposure = high|low`.
+From the terminal photograph *(OCR doc 01)*, and recovered verbatim as
+`evidence/lab-scripts/shell/spinContainer.sh`:
 
 ```bash
-# every Cyp gene
-python3 compare_te_cyp_exposure.py --config te_cyp_species_config.ini \
+docker run -it --rm \
+    -v $(pwd):/Spring26RepeatModeler \
+    -w /Spring26RepeatModeler \
+    dfam/tetools:latest bash
+```
+
+That starts an **interactive shell**; it runs nothing. The operator then typed, inside the
+container *(OCR doc 04)*:
+
+```
+BuildDatabase -name D_speciesname Species_genome_file.fa
+RepeatModeler -database D_speciesname -threads 10 -LTRStruct
+```
+
+8–26 hours per genome, 45 hours observed on one run with `-LTRStruct` *(OCR docs 03c, 04)*.
+Because `-v $(pwd):…` mounts only the current species folder, a second species meant a second
+terminal and the whole sequence again.
+
+## Stage 2 — RepeatMasker
+
+The lab notebook records the command as *(OCR doc 02)*:
+
+```
+RepeatMasker -lib RM_#$date/consensi.fa.classified -pa 8  Drosophila_ .fna file
+```
+
+`evidence/lab-scripts/shell/runMasker.sh` has since been recovered, and **it does not match**:
+
+```bash
+RepeatMasker -lib GFF_Files/Dataset_1_12_species/DROSOPHILA_PAULISTORUM_final.gff
+```
+
+No `-pa`, no genome FASTA, and `-lib` pointing at a gene annotation GFF rather than a repeat
+library. As saved it could not have produced anything. See
+[`pipeline/detailed/02-stage-reference.md`](pipeline/detailed/02-stage-reference.md) for what
+that does and does not tell us.
+
+## Stage 3 — pairing Cyp genes with TEs
+
+Three scripts, run in order, **taking no arguments**. Paths are string literals at the top of
+each file and were edited before every run:
+
+```
+python repeatOpp.py        # annotation GFF + Cyp gene list  -> filtered.gff
+python Locate_TE.py        # filtered.gff + RepeatMasker .out -> GenesAffectedByTEs.txt
+python CleanAnnasse.py     # collapses column 2 to a gene symbol -> DAnasse_TE_Cyp.txt
+```
+
+| Script | The literals that were edited |
+|---|---|
+| `repeatOpp.py` | `GFF`, `rgFile` |
+| `Locate_TE.py` | `cypGene`, `TEs` |
+| `CleanAnnasse.py` | `toClean`, `aliasToFind` |
+
+The notebook's own procedure is three edit–save–run cycles per species, with the output
+renamed by hand afterwards to `D_<species>GenesAffectedByTE.txt` *(OCR doc 02, step 3)*.
+Twenty-nine species were processed this way; three of the twenty-nine filenames are
+misspelled.
+
+A TE counts as affecting a gene if it falls **entirely inside** the gene's span extended by
+3,000 bp at each end. That number is a literal in `Locate_TE.py` and appears in no output
+file.
+
+## Stage 0b — gene renaming
+
+`ReVamp_Final.py` and `NEW_Step_5_Replace_gff_Names_with_Dmelanogaster_1_9.py`, both run
+without arguments, both with hardcoded Windows paths. ReVamp takes about ten minutes per
+species and was run over every species column in the HOG table in one loop.
+
+## Stages 4–6 — merge and compare
+
+The four scripts in `evidence/analysis-scripts/` do take arguments. Their documented
+invocations, from their own module docstrings:
+
+```bash
+python build_tfbs_te_gff.py \
+    --te-file D_suzukiiGenesAffectedByTE.txt \
+    --gff dsuzukii_annotation.gff3 \
+    --fasta dsuzukii_genome.fa \
+    --output combined_cyp_annotation_suzukii.gff3
+
+python compare_te_cyp_exposure.py   --config te_cyp_species_config.ini \
     --output-csv te_cyp_summary.csv --output-report te_cyp_report.md --plot
-
-# only Cyp genes near a CncC:Maf-S site  (needs motif scanning to have been run)
-python3 compare_te_cyp_cncc.py --config te_cyp_species_config.ini
-
-# only a curated resistance gene list
-python3 compare_te_cyp_xenobiotic.py --config te_cyp_species_config.ini \
+python compare_te_cyp_cncc.py       --config te_cyp_species_config.ini
+python compare_te_cyp_xenobiotic.py --config te_cyp_species_config.ini \
     --gene-list xenobiotic_resistance_cyp_genes.txt
 ```
 
-Shared options: `--output-csv`, `--per-gene-csv`, `--output-report`, `--plot` / `--no-plot`,
-`--plot-path`, `--alpha` (default 0.05).
+> **As delivered these do not run.** The files are named `build_tfbs_te_gff 1.py`,
+> `compare_te_cyp_exposure 1 1.py` and so on, and two of the comparison scripts do
+> `import compare_te_cyp_exposure`, which cannot resolve against a filename with spaces. The
+> config files they reference (`te_cyp_species_config.ini`,
+> `xenobiotic_resistance_cyp_genes.txt`, and the three `*.example.*` templates) are not in the
+> delivery either. The suffixes are Windows duplicate-file renames from round trips through
+> zip and OneDrive, which is also how the scripts arrived.
 
-```bash
-python3 compare_te_cyp_exposure.py --self-test
-```
+## Stage 5 — JBrowse
 
-Runs the statistics against a second, independently written implementation and exits. Worth
-doing once on a new machine — it checks the Fisher's exact and Mann-Whitney U code, which is
-written from scratch here rather than taken from scipy.
-
-**The example config files these scripts reference do not exist in this repository.** You have
-to write your own; the formats are in
-[`pipeline/detailed/03-data-contracts.md`](pipeline/detailed/03-data-contracts.md).
+Not a command. A person, clicking: open new genome, choose the FASTA adapter, name the
+assembly after the species, add a track pointing at the processed annotation
+*(OCR docs 02, 05)*. Sessions survive for three species only.
 
 ---
 
-## The shortest possible version
+# Part 2 — What was run to check it
+
+Everything below was run on **copies** made outside this repository, with only paths changed,
+writing output outside the repository. That is the standing rule, and these are the commands
+that obey it.
+
+## Getting the source annotations
+
+The species annotations the lab renamed come from Zenodo record 18453526, *Comparative gene
+annotation and orthology assignments across 301 species of Drosophilidae* (Dhakad & Obbard).
 
 ```bash
-# 1. genomes -> repeat libraries and TE annotation tables   (hours per genome)
-cd repeat-modeler-automation && ./rm-manager.sh start
-./rm-manager.sh status                       # check back later
-
-# 2. TE table + gene annotation -> "which Cyp genes have TEs"   (seconds, manual)
-cd ../pipeline-scripts-output
-python3 repeatOpp.py && python3 Locate_TE.py && python3 CleanAnnasse.py
-
-# 3. merge, then compare the species                        (minutes)
-cd ../analysis-pipeline
-python3 build_tfbs_te_gff.py --te-file … --gff … --fasta … --output combined.gff3
-python3 compare_te_cyp_exposure.py --config te_cyp_species_config.ini
+mkdir -p ~/dl-staging && cd ~/dl-staging
+curl -L -C - --retry 10 -o annotations.tar.gz \
+  "https://zenodo.org/api/records/18453526/files/annotations.tar.gz/content"
+md5sum annotations.tar.gz      # d7cd2d6d0b98b4d51036b05c619c590b, 1,755,436,625 bytes
+mkdir -p annotations && tar xzf annotations.tar.gz -C annotations
+gunzip -k annotations/gffs/DROSOPHILA_ARIZONAE_final.gff.gz
 ```
 
-Step 2 needs a gene annotation whose names are already *D. melanogaster* ortholog symbols —
-the `change_<SPECIES>_final_final.gff` files. They are made by `to_organize/ReVamp_Final.py`
-(recovered, not yet committed; about 10 minutes per species):
+Zenodo throttles to roughly 1–2.5 MB/s regardless of how many connections you open, so allow
+15–25 minutes. **Download to local disk**, not to a network mount — a download written
+straight to the sshfs-mounted storage box stalled and left a truncated file, which is how that
+rule came about.
+
+## Re-running the gene-renaming step
 
 ```bash
-# the original is an artifact — run a path-only copy, outside the repository (pandas 2.x)
-cd ~/dl-staging/test_run && python /path/to/ReVamp_copy.py
+# copy the script out, change only the four paths, then:
+mkdir -p ~/dl-staging/test_run && cd ~/dl-staging/test_run
+python /path/to/ReVamp_copy.py           # pandas 2.x, ~10 minutes per species
 ```
 
-Inputs, path edits and known defects: [`deep/06-final-final-gff.md`](deep/06-final-final-gff.md).
+Which four paths, and how the output compares to the lab's own, is in
+[`scripts/06-final-final-gff.md`](scripts/06-final-final-gff.md). Use pandas **2.x**: pandas 3
+changes string dtype handling, and the originals were made in January 2026.
+
+## Re-running the TE-locating step
+
+Same pattern — path-only copies of `repeatOpp.py`, `Locate_TE.py` and `CleanAnnasse.py`, run
+outside the repository against `evidence/te-locating-run/DA_Files/`. Re-running the last two
+steps from the archived `filtered.gff` reproduces the archived `GenesAffectedByTEs.txt` and
+`DAnasse_TE_Cyp.txt` exactly, once CRLF line endings are normalised.
+
+## Comparing an output against the lab's
+
+Line endings and stray tabs account for every difference that is *not* a renaming difference,
+so normalise them before diffing:
+
+```bash
+diff <(tr -d '\r' < lab_output.gff) <(tr -d '\r' < rerun_output.gff) | head
+```
+
+## Environment notes
+
+The system Python on the working machine had neither `pip` nor `venv`. pip was bootstrapped
+into a scratch virtualenv outside the repository; pandas was pinned below 3 to match January
+2026 behaviour. Nothing was installed into the repository, and no requirements file is
+committed here — this repository has nothing to run.
 
 ---
 
 ## Where to read more
 
-- **What the pipeline is for, with pictures** — [`pipeline/simple/`](pipeline/simple/)
-- **Every stage in detail** — [`pipeline/detailed/02-stage-reference.md`](pipeline/detailed/02-stage-reference.md)
-- **File formats** — [`pipeline/detailed/03-data-contracts.md`](pipeline/detailed/03-data-contracts.md)
-- **Known defects — read before quoting any number** — [`pipeline/detailed/04-gaps-and-provenance.md`](pipeline/detailed/04-gaps-and-provenance.md)
-- **The scripts line by line** — [`deep/`](deep/)
-- **Making the `final_final` GFFs** — [`deep/06-final-final-gff.md`](deep/06-final-final-gff.md)
+- **What each stage did** — [`pipeline/detailed/02-stage-reference.md`](pipeline/detailed/02-stage-reference.md)
+- **The formats between stages** — [`pipeline/detailed/03-data-contracts.md`](pipeline/detailed/03-data-contracts.md)
+- **What is broken** — [`pipeline/detailed/04-gaps-and-provenance.md`](pipeline/detailed/04-gaps-and-provenance.md)
+- **The scripts line by line** — [`scripts/`](scripts/)
+- **The artifacts themselves** — [`../evidence/README.md`](../evidence/README.md)

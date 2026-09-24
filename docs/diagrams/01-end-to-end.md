@@ -1,30 +1,33 @@
 # End to end
 
+The pipeline as it ran, on one page. Stage names here are the lab's own work; the boxes are
+labelled with where the evidence for each now sits.
+
 ## The whole pipeline
 
 ```mermaid
 flowchart TD
-    subgraph S1["Stage 1 — repeat-modeler-automation/"]
+    subgraph S1["Stages 1-2 — run by hand in a container"]
         direction TB
-        A["Genome FASTA, gzipped<br/>one per species"]
-        A --> B["worker.sh<br/>claims one genome"]
-        B --> C["BuildDatabase<br/>(in dfam/tetools container)"]
+        A["Genome FASTA<br/>one per species"]
+        A --> B["spinContainer.sh<br/>interactive dfam/tetools shell"]
+        B --> C["BuildDatabase<br/>typed by hand"]
         C --> D["RepeatModeler<br/>8-26 h per genome"]
-        D --> E[["sample-families.fa<br/>de novo TE library"]]
-        E --> F["RepeatMasker<br/>-lib families.fa<br/>when RUN_MASKER=1"]
+        D --> E[["consensi.fa.classified<br/>de novo TE library"]]
+        E --> F["RepeatMasker -lib<br/>command known only from<br/>the notebook and write-up"]
     end
 
-    subgraph GAP["NOT IN THIS REPOSITORY"]
+    subgraph GAP["Stage 0 — orthogroup table + renaming"]
         direction TB
-        G["Gene annotation<br/>NCBI RefSeq / BRAKER / MAKER"]
-        H["Ortholog renaming<br/>to D. melanogaster symbols"]
+        G["Gene annotation<br/>Zenodo, already carrying hog= attributes"]
+        H["ReVamp_Final.py  OR<br/>NEW_Step_5_... — two scripts,<br/>two different results"]
     end
 
     F --> I[["sample.rm.out<br/>every repeat, located"]]
     G --> H
     H --> J[["annotation.gff<br/>Cyp symbols in Name="]]
 
-    subgraph S2["Stage 2 — pipeline-scripts-output/"]
+    subgraph S2["Stage 3 — evidence/te-locating-run/"]
         direction TB
         K["repeatOpp.py<br/>keep only Cyp gene rows"]
         L["Locate_TE.py<br/>overlap within +/-3 kb"]
@@ -36,7 +39,7 @@ flowchart TD
     I --> L
     M --> N[["D_species GenesAffectedByTE.txt<br/>seqid TAB gene TAB RepeatMasker fields"]]
 
-    subgraph S3["Stage 3 — analysis-pipeline/"]
+    subgraph S3["Stage 4 — evidence/analysis-scripts/"]
         direction TB
         O["build_tfbs_te_gff.py"]
         P["FIMO + JASPAR + CncC:Maf-S ARE"]
@@ -50,7 +53,7 @@ flowchart TD
 
     Q --> R["JBrowse 2<br/>GFF3Tabix track"]
 
-    subgraph S4["Stage 4 — analysis-pipeline/"]
+    subgraph S4["Stage 6 — evidence/analysis-scripts/"]
         direction TB
         S["compare_te_cyp_exposure.py<br/>all Cyp genes"]
         T["compare_te_cyp_cncc.py<br/>CncC-proximal subset"]
@@ -73,46 +76,41 @@ flowchart TD
     style S4 fill:#f6eeff,stroke:#8a4ab5
 ```
 
-## The seam
+## The two seams
 
-The dashed box is the important part of this diagram — and it is smaller than it used to be.
+**The dashed box, stage 0, is where two people diverged.** The annotation feeding stage 3 has
+to carry *D. melanogaster* Cyp symbols in `Name=`, and two scripts produced that: Duy's
+`ReVamp_Final.py` and Ayush's `NEW_Step_5_…`. They do not agree, nothing ever chose between
+them, and the 29 finished tables are a mix — 19 from one, 7 from the other. See
+[`../scripts/06-final-final-gff.md`](../scripts/06-final-final-gff.md).
 
-Stage 1 produces a TE *library*: a catalogue of repeat families found in a genome, which does
-not say where in the genome they are. Turning that library into per-locus coordinates is
-RepeatMasker's job, and **RepeatMasker is now run by the same workers**, as a second stage
-gated on `RUN_MASKER=1`. A genome FASTA therefore reaches `sample.rm.out` without leaving this
-repository. (The lab's own `runMasker.sh`, known from the archive photographs — see
-`OCR docs/02` — was never committed, and is superseded rather than recovered.)
+**The RepeatMasker box is where the sources conflict.** `runMasker.sh` has been recovered and
+does not match the lab notebook *(OCR doc 02)* or the write-up *(OCR doc 05)*, which agree
+with each other. The diagram shows what those two describe, because that is what is consistent
+with the surviving `.out` files. See
+[`../pipeline/detailed/02-stage-reference.md`](../pipeline/detailed/02-stage-reference.md).
 
-**One required step still has no code here**: the annotation GFF whose `Name=` attributes are
-already *D. melanogaster* Cyp symbols. Producing that was the job of `ReVamp_Final.py` /
-`NEW_Step_5_Replace_gff_Names_with_Dmelanogaster_1_9.py`, neither of which was committed. Both
-have since been recovered into `to_organize/` — see
-[`../deep/06-final-final-gff.md`](../deep/06-final-final-gff.md).
-
-So: with genomes alone you now get all the way to a located-repeat table. To go further you
-also need a renamed `*.gff` for that species — existing species have one, a new species would
-not.
-
-## Where the data in this repository sits on that path
+## Where the surviving data sits on that path
 
 ```mermaid
 flowchart LR
-    A["repeat-modeler-automation/<br/>scripts only, no data"]
-    B["pipeline-scripts-output/DA_Files/<br/>D. ananassae inputs"]
-    C["pipeline-scripts-output/<br/>filtered.gff, GenesAffectedByTEs.txt,<br/>DAnasse_TE_Cyp.txt"]
+    B["evidence/te-locating-run/DA_Files/<br/>D. ananassae inputs"]
+    C["evidence/te-locating-run/<br/>filtered.gff, GenesAffectedByTEs.txt,<br/>DAnasse_TE_Cyp.txt"]
     D["AnalysisForAll/output/<br/>29 species, TE-hits tables"]
-    E["analysis-pipeline/<br/>scripts only, no data"]
+    E["evidence/analysis-scripts/<br/>scripts only, no data"]
+    F["evidence/lab-data/renamed-annotations/<br/>25 renamed annotations"]
 
+    F -.->|"the other branch of stage 0"| D
     B -->|"worked example"| C
     C -->|"same 3 steps, batched"| D
     D -.->|"would feed"| E
 
-    style A fill:#eef6ff
     style E fill:#f0ffee
+    style F fill:#fff6ee
 ```
 
-The repository contains **one fully worked example** (*D. ananassae*, every intermediate
-preserved) and **29 finished TE-hits tables**, but no combined GFF3 and no comparison
-output. Stage 3 and Stage 4 have never been run on the committed data — their inputs are
-present, their outputs are not.
+The archive contains **one fully worked example** (*D. ananassae*, every intermediate
+preserved), **29 finished TE-hits tables** and **25 renamed annotations** — but no combined
+GFF3 and no comparison output at all. Stages 4 and 6 left nothing behind: their inputs
+survive, their outputs do not, and the lab's own results spreadsheet (`TEandTFdata.xls`) is
+not in the archive either.

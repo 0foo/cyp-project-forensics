@@ -1,7 +1,8 @@
 # Pipeline architecture
 
-Why the pipeline is shaped the way it is, and where its seams are. This is the document to
-read before changing anything structural.
+Why the pipeline is shaped the way it is, and where its seams are. Almost every oddity in
+the surviving files — the hardcoded Windows paths, the ` 1 1` filename suffixes, the absence
+of any end-to-end driver — is explained by something in this document.
 
 ## The constraint everything else follows from
 
@@ -30,8 +31,14 @@ stylistically inconsistent, that is why — they are solving different problems.
 
 ## Two eras
 
-The pipeline exists in two versions, and the repository contains pieces of both. Knowing
-which era a file belongs to explains most of its oddities.
+The pipeline exists in two versions, and knowing which one a file belongs to explains most of
+its oddities.
+
+**"Era 1" is the lab's own work** — everything in [`../../../evidence/`](../../../evidence/)
+and everything this investigation is about. **"Era 2" is a September 2026 rebuild** of the
+first two stages, written after the fact and split out into the separate
+`repeat-modeler-automation` repository. Era 2 is described here because it is the clearest
+account of what era 1 had to achieve, not because it is part of this repository.
 
 ```mermaid
 flowchart TB
@@ -42,32 +49,37 @@ flowchart TB
         E1C --> E1D["JBrowse"]
     end
 
-    subgraph era2["ERA 2 — the committed code"]
+    subgraph era2["ERA 2 — the 2026 rebuild (separate repository)"]
         direction LR
-        E2A["repeat-modeler-automation/<br/>worker + manager<br/>model + mask stages"] --> E2C["pipeline-scripts-output/<br/>same 3 scripts, committed"]
-        E2C --> E2D["analysis-pipeline/<br/>merge + statistics"]
+        E2A["repeat-modeler-automation/<br/>worker + manager<br/>model + mask stages"]
     end
 
-    era1 -.->|"produced the data<br/>that era 2 analyses"| era2
+    era1 -.->|"stages 1 and 2 rebuilt as<br/>unattended infrastructure"| era2
 
-    style E2A fill:#e6f7e6
+    style E2A fill:#eeeeee
 ```
 
-**Era 1** is the pipeline as the lab actually ran it, recorded only in photographs. It was
-interactive, Windows-hosted, and manual at every step: a WSL terminal to start a container
-*(OCR doc 01)*, two commands typed by hand inside it *(OCR doc 04)*, then VS Code for the
-Python steps with file paths pasted in one at a time *(OCR docs 02, 05)*. It produced all the
-real data in this repository.
+**Era 1** is the pipeline as the lab actually ran it. It was interactive, Windows-hosted, and
+manual at every step: a WSL terminal to start a container *(OCR doc 01)*, two commands typed
+by hand inside it *(OCR doc 04)*, then VS Code for the Python steps with file paths pasted in
+one at a time *(OCR docs 02, 05)*. It produced every piece of real data in this repository.
 
-**Era 2** is what is committed: stages 1 **and 2** rebuilt as unattended infrastructure, the
-same stage 3 scripts preserved as-is, and a substantial new analysis layer
-(`analysis-pipeline/`) that era 1 never had. Era 1's two hand-run shell scripts,
-`spinContainer.sh` and `runMasker.sh`, are both superseded by the worker — which is why
-neither needed to be recovered.
+Both of its hand-run shell scripts have since been recovered into
+[`../../../evidence/lab-scripts/shell/`](../../../evidence/lab-scripts/shell/), and they are
+not equally informative. `spinContainer.sh` matches its photograph exactly. `runMasker.sh`
+matches nothing — it invokes RepeatMasker with a GFF where the repeat library should be and no
+genome at all, and cannot have produced any surviving output. See
+[`02-stage-reference.md`](02-stage-reference.md).
 
-The two eras agree on the important conventions. Era 2's `worker.sh` uses the same container
-image (`dfam/tetools:latest`) and the same mount-at-a-fixed-path convention that era 1's
-`spinContainer.sh` used, so a genome processed either way comes out the same.
+**Era 2** is the September 2026 rebuild of stages 1 and 2 as unattended infrastructure. It
+agrees with era 1 on the conventions that matter: the same container image
+(`dfam/tetools:latest`) and the same mount-at-a-fixed-path arrangement `spinContainer.sh`
+used, so a genome processed either way comes out the same. It is **not** in this repository.
+
+The analysis layer (`evidence/analysis-scripts/`) sits awkwardly between the two. It is far
+more carefully written than anything else the lab produced — argument parsing, fallbacks,
+self-tests — and it arrived as a OneDrive export in January 2026 rather than being found among
+the lab's working files. Who wrote it is not recorded anywhere in the archive.
 
 ## Where the pipeline physically ran
 
@@ -77,15 +89,16 @@ Era 1 did not run on one machine, and this matters more than it sounds.
 |---|---|---|
 | 1 — RepeatModeler | Windows box `DESKTOP-DJ2BL6F`, in WSL, in Docker, against a `Data (D:)` drive | *OCR docs 01, 03b* |
 | 2 — RepeatMasker | **A different person's machine.** Annotation GFFs were zipped, dropped into a `For RepeatMasker` folder, and uploaded to OneDrive for a collaborator to collect | *OCR doc 04* |
-| 3 — Python scripts | Windows, in VS Code, with `C:/Users/User/Documents/...` paths | *OCR doc 02*, and the hardcoded paths in the committed scripts |
+| 3 — Python scripts | Windows, in VS Code, with `C:/Users/User/Documents/...` paths | *OCR doc 02*, and the hardcoded paths in the surviving scripts |
 | 4-6 — Analysis | Windows, `Summer26/JBrowse_gff_creator/` | *OCR doc 03a* |
 
 **The handoff between stages 2 and 3 was OneDrive, not a filesystem.** That single fact
 explains a family of otherwise baffling details:
 
-- the ` 1` and ` 1 1` suffixes on every file in `analysis-pipeline/`, which are Windows'
-  duplicate-file renames acquired on round trips through zip and OneDrive;
-- `analysis-pipeline/OneDrive_1_9-1-2026.zip`, which is one of those exports, still zipped;
+- the ` 1` and ` 1 1` suffixes on every file in `evidence/analysis-scripts/`, which are Windows'
+  duplicate-file renames acquired on round trips through zip and OneDrive — and which are the
+  reason two of those scripts cannot import the third;
+- `evidence/analysis-scripts/OneDrive_1_9-1-2026.zip`, which is one of those exports, still zipped;
 - the fact that **no machine ever ran the whole pipeline end to end**, which is why no
   end-to-end driver script exists to be recovered.
 
@@ -108,19 +121,23 @@ flowchart LR
 halves of the project. Stage 3 writes it; `build_tfbs_te_gff.py --te-hits` reads it. Nothing
 else crosses that line.
 
-This is the most useful structural fact in the repository. It means:
+This is the most useful structural fact about the pipeline. It means:
 
-- **You can start here.** Anyone with a RepeatMasker `.out` file and a gene annotation can
-  produce this file by other means and run stages 4-6 unchanged.
-- **The missing stage 2 is survivable.** The gap is upstream of the waist, and 29 species'
-  worth of output already sits downstream of it in `AnalysisForAll/output/`.
-- **Changes stay local.** Reworking stage 3 — which needs it — cannot break stages 4-6 as
-  long as this format is preserved.
+- **The waist is where a reconstruction can join.** Anyone with a RepeatMasker `.out` file and
+  a gene annotation can produce this file by other means, which is exactly what the separate
+  `cyp-te-pipeline` repository does.
+- **The upstream losses are survivable.** Everything that could not be recovered sits upstream
+  of the waist, and 29 species' worth of output already sits downstream of it in
+  `AnalysisForAll/output/`.
+- **It also means the defects are locked in.** The 3 kb containment rule is applied here and
+  written into the file as prose (`Description=Within range of …`); nothing downstream can
+  revisit it.
 
-## How stage 1 achieves unattended operation
+## How the era 2 rebuild achieves unattended operation
 
-Summarised here because it is a pipeline-level property, not a script detail. For the
-implementation, see [`docs/deep/01-repeat-modeler-automation.md`](../../deep/01-repeat-modeler-automation.md).
+Summarised here because it is the clearest statement of the constraint era 1 was labouring
+under. The implementation is in the separate `repeat-modeler-automation` repository and is
+described in [`../../scripts/01-repeat-modeler-automation.md`](../../scripts/01-repeat-modeler-automation.md).
 
 The model is **claim-based, with no coordinator**. There is no queue server, no shared state
 file, no lock manager. Every genome is in exactly one of four states, and three of them are
@@ -158,7 +175,8 @@ exclusion scheme rests on it.
 
 ## The analysis layer's design stance
 
-Stages 4-6 were written with three deliberate constraints, visible throughout:
+Stages 4-6 were written with three deliberate constraints, visible throughout, and reading
+them off the code is most of what can be said about who wrote it and why:
 
 **No third-party Python dependencies.** Fisher's exact test, Mann-Whitney U, Welch's t-test
 and the incomplete beta function are all implemented from the standard library, and
@@ -175,8 +193,9 @@ Every one of these has a documented fallback, and motif scanning can be skipped 
 **Statistical honesty is built into the output, not left to the reader.** The pooled per-gene
 test is pseudoreplication, and every generated report says so. A species with no
 `TF_binding_site` records is reported as a *data gap*, not as a biological finding of "no
-CncC sites". These are structural choices, and they should be preserved by anyone extending
-the analysis.
+CncC sites". These are structural choices, and they are the strongest evidence in the archive
+that somebody understood the study's limits clearly — which sits oddly beside the fact that
+two of the three scripts, as delivered, could not run at all.
 
 ## Reading order from here
 

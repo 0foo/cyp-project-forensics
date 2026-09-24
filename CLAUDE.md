@@ -1,5 +1,7 @@
 # Project history (Claude Code sessions)
 
+**This repository is a forensic investigation, not a project.** It began life as an ordinary project repo holding the CYP/transposable-element pipeline; on 2026-09-24 its purpose changed entirely. It now exists to trace down and understand how a poorly documented lab pipeline worked. Nothing here is meant to be run, fixed or extended — the runnable version lives in the separate `cyp-te-pipeline` repository. See [`README.md`](README.md) for the current entry point.
+
 This folder was called `~/projects/cyp-project` until 2026-09-24 about 17:06 CDT. It was renamed to `~/projects/cyp-project-forensics` during that day's work. This file rebuilds, from the saved Claude Code transcripts, what happened in the folder under both names.
 
 **Sources:**
@@ -8,11 +10,14 @@ This folder was called `~/projects/cyp-project` until 2026-09-24 about 17:06 CDT
 
 **Times:** local time (CDT, UTC−5) unless marked otherwise. Some sessions ran at the same time as each other.
 
+**Paths:** the session-by-session narrative below uses the paths as they were *at the time*. The repository was reorganised at the end of 2026-09-24 (session 10); the old→new mapping is in [`evidence/README.md`](evidence/README.md).
+
 **Not covered:** no transcripts survive for the work behind the September 13–15 commits. That part is known only from git.
 
 ## Standing rules set during this work
 
-- **The lab's files are forensic artifacts.** Never modify, fix or regenerate anything the lab produced (`to_organize/`, `pipeline-scripts-output/`, `analysis-pipeline/`, the `final_final` GFFs, the HOG tables). Run copies with only the paths changed, kept outside the artifact folders, and write outputs outside them too. Report defects as findings, not as fixes. (Set 2026-09-24 14:14: "this whole thing is an artifact and should not be changed. This is pure forensics.")
+- **The lab's files are forensic artifacts.** Never modify, fix or regenerate anything under `evidence/`. Run copies with only the paths changed, kept outside the artifact folders, and write outputs outside them too. Report defects as findings, not as fixes. (Set 2026-09-24 14:14: "this whole thing is an artifact and should not be changed. This is pure forensics.")
+- **This is a forensics repo, not a project repo.** Documentation is an investigation report: what the lab's code did, what was reconstructed, what is uncertain, and where the evidence sits. It is not a user manual, and reconstructed behaviour is never presented as working software. (Set 2026-09-24, during the reorganisation: "it is no longer a project repo it's purely forensics for tracing down and understanding how a poorly documented pipeline worked.")
 - **`/mnt/storagebox` is storage only.** It's a Hetzner Storage Box mounted over sshfs. Download and process on local disk, and rsync finished files there afterwards. (Set 2026-09-24 14:35, after a download written straight to the box stalled and left a truncated file.)
 
 ---
@@ -130,7 +135,7 @@ The session ended on API connection errors.
 - Both runs renamed the same 26,533 lines.
 
 **d. Documentation:**
-- **Wrote `docs/deep/06-final-final-gff.md`.**
+- **Wrote `docs/scripts/06-final-final-gff.md`.**
 - **Updated 7 existing pages** that had said this step had no code in the repo.
 - **Findings recorded:**
   - 788 of 11,063 arizonae orthologous genes (7%) are never renamed. Cells in the HOG table that list several genes are stored with quotes and spaces, so none of those genes match.
@@ -213,13 +218,29 @@ The session ended on API connection errors.
 
 ### 9. This file (17:36, session `30e5b315`)
 
+### 10. Reorganisation and documentation audit (2026-09-24, evening)
+
+Triggered by: *"organize the to_organize folder … make the repo a little more organized, don't delete anything, don't change any code file content, but feel free to move files around … go through and make sure all the documentation is still accurate."* Followed by the framing above: the repo is purely forensics now.
+
+- **Everything moved into two trees.** `evidence/` for artifacts, `docs/` for the investigation. `to_organize/` is gone as a name; nothing was deleted and no file content was changed. The full old→new mapping is in [`evidence/README.md`](evidence/README.md).
+- **New entry points:** root `README.md`, `evidence/README.md` (the manifest and chain of custody), `docs/superseded/README.md`.
+- **`docs/deep/` → `docs/scripts/`**, **`OCR docs/` → `docs/ocr/`** (the space in the path was a nuisance), **`docs/simple/` and `collected-docs/pipeline-docs/` → `docs/superseded/`** with banners explaining what in them is out of date.
+- **Documentation audit.** Every page was checked against the files. Corrections made:
+  - Docs described `repeat-modeler-automation/` as part of this repository. It was split out at `be73ebe` on 2026-09-15 and is not the lab's code; it is now labelled as such everywhere.
+  - Docs said `to_organize/` was untracked. It was committed in `e1ce8a3`.
+  - **`runMasker.sh` had in fact been recovered** and nobody had noticed. It contradicts the lab notebook and the Kaur write-up: `-lib` points at a gene annotation GFF, there is no genome FASTA argument and no `-pa`. Documented as a conflict, not resolved.
+  - The 19-vs-7 split of the finished tables between the two renaming scripts was promoted from a buried subsection to a numbered finding (G4).
+  - `docs/diagrams/05-data-lineage.md` pointed at a `docs/deep/06-data-formats.md` that never existed.
+  - Stage numbering: `docs/superseded/simple/` counts four stages, `docs/pipeline/` counts seven (0–6). The mismatch is now stated rather than left to trip people.
+  - "Fix:" framing throughout the script docs was changed to "what would have to change", to keep defects as findings.
+
 ---
 
 ## Where things are now
 
 | What | Location |
 |---|---|
-| This repo | `~/projects/cyp-project-forensics` → `github.com/0foo/cyp-project-forensics` (`master` = `e1ce8a3`) |
+| This repo | `~/projects/cyp-project-forensics` → `github.com/0foo/cyp-project-forensics` |
 | Snapshot of the repo before the 2026-09-24 work | `~/projects/cyp-project-bkp` (`be73ebe`) |
 | Happy-path pipeline | `~/projects/cyp-te-pipeline` → `github.com/0foo/cyp-te-pipeline` |
 | 13 GB melanogaster `final_final` | `~/projects/cyp-old-data/` (not committed) |
@@ -228,20 +249,22 @@ The session ended on API connection errors.
 | Claude's ReVamp/Stage-3 test outputs | `/home/nick/dl-staging/test_run/` |
 | Truncated annotations archive | `/mnt/storagebox/reference/annotations/` (never replaced; sync abandoned) |
 
-## Things in `to_organize/` that are NOT lab originals
+## Things under `evidence/` that are NOT lab originals
 
-These were committed in `e1ce8a3` alongside the evidence:
-
-- **`make_Dmel_output.py`, `Dmel_output.tsv`:** written by Claude on 2026-09-24 at 13:10. They're a reconstruction, not the lab's January file.
-- **`zenodo_dl/annotations_15705949.tar.gz`:** an 11 MB partial download by Claude.
-- **`hog_og/HOG_OG_association.tsv.xz`, `hog_og/HOG_OG_association_1_9.tsv.xz`:** Claude's `xz` compression of lab files. The uncompressed originals were deleted, but they decompress to identical bytes.
-- **`final_final/`:** no longer holds the MELANOGASTER file (moved to `cyp-old-data`).
+- **`evidence/reconstructed/`** — everything in it. `make_Dmel_output.py` and `Dmel_output.tsv` were written by Claude on 2026-09-24 at 13:10; they are a reconstruction, not the lab's January file. `zenodo-partial-download/` is an 11 MB abandoned download.
+- **`evidence/lab-data/hog-tables/HOG_OG_association.tsv.xz` and `…_1_9.tsv.xz`** — Claude's `xz` compression of lab files. The uncompressed originals were deleted after a verified byte-exact round trip. This is the only place a lab original was altered.
+- **`evidence/lab-data/renamed-annotations/`** — holds 25 of the 26 files; the MELANOGASTER one was moved to `cyp-old-data`.
+- **`evidence/analysis-scripts/README.md`** — written 2026-09-13 from the scripts' docstrings, not part of the OneDrive delivery.
 - **Timestamps:** the extracted files carry 2026-09-24 timestamps, from extraction, not the lab's dates.
 
 ## Open questions left from the sessions
 
-- Why is the melanogaster `final_final` 13 GB? The line-length scan never finished.
-- What changed between Zenodo's May `GFF/` and June `gff_fixed/`? The two were never diffed.
+These are tracked properly in [`docs/pipeline/detailed/04-gaps-and-provenance.md`](docs/pipeline/detailed/04-gaps-and-provenance.md), Part 3. In short:
+
+- Why is the melanogaster `final_final` 13 GB? The line-length scan never finished. (U4)
+- What changed between Zenodo's May `GFF/` and June `gff_fixed/`? The two were never diffed. (U5)
+- What was the recovered `runMasker.sh` actually for? It cannot be what produced the `.out` files. (G1)
+- Who wrote `evidence/analysis-scripts/`? Nothing in the archive credits anyone.
 - The pipeline's gaps: see `~/projects/cyp-te-pipeline/NOTES.md`. They include:
   - genome sources;
   - the high/low exposure species config;

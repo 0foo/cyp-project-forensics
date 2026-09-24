@@ -1,18 +1,26 @@
 # Stage reference
 
-One section per stage. Each gives the inputs, the exact command, the outputs, the runtime,
-and what goes wrong. File formats are specified separately in
+One section per stage: what went in, what command ran, what came out, how long it took, and
+what went wrong. File formats are specified separately in
 [`03-data-contracts.md`](03-data-contracts.md).
 
-Legend: **✅ committed** — code is in this repository. **❌ missing** — the stage was run, but
-its code was never committed and survives only in the archive photographs.
+Legend, describing **what survives of each stage**:
+
+| | Meaning |
+|---|---|
+| **✅ recovered** | The lab's own code for this stage is in [`../../../evidence/`](../../../evidence/) and can be read |
+| **⚠ partly recovered** | Some of the code survives; a piece it depends on does not |
+| **❌ lost** | No code survives. The stage is known only from the archive photographs |
+
+Nothing in this document is an instruction to run anything. Where a command appears, it is
+the command the lab ran, or the command used during this investigation to check a claim.
 
 ---
 
-## Stage 0 — Preparing the inputs ❌
+## Stage 0 — Preparing the inputs ⚠
 
-Before stage 1 can start, each species needs two things, and one of them requires work that
-is not in this repository.
+Before stage 1 could start, each species needed two things, and the second of them is where
+most of this investigation went.
 
 ### 0a. Genome FASTA
 
@@ -25,18 +33,21 @@ described in the log as the *old* location superseded by `Spring26/` *(OCR doc 0
 JBrowse instructions and the handoff sketch both still point at the `Dhakad` tree *(OCR docs
 02, 06)*, so the genome FASTAs appear never to have actually moved.
 
-Era 2's `worker.sh` expects them **gzipped** in `IN_DIR`, matching `GLOB` (default `*.fna.gz`).
+(The later automation — see the note on eras below — expects them **gzipped** in `IN_DIR`,
+matching `GLOB`, default `*.fna.gz`.)
 
-### 0b. Gene annotation GFF3 with *D. melanogaster* ortholog names ❌
+### 0b. Gene annotation GFF3 with *D. melanogaster* ortholog names ⚠
 
-This is the important one. Each species' annotation must have its gene names replaced with
-the corresponding *D. melanogaster* ortholog symbols, producing files named
-`*_withDmelNames.gff`. Without it, the same gene carries a different symbol in every species
-and nothing can be compared across species — and the Cyp target list would match nothing.
+This is the important one. Each species' annotation had its gene names replaced with the
+corresponding *D. melanogaster* ortholog symbols. Without that step the same gene carries a
+different symbol in every species, nothing can be compared across species, and the Cyp target
+list matches nothing.
 
-**Two different scripts did this, by two different people, and neither is committed** — both
-have since been recovered into `to_organize/`; `ReVamp_Final.py` is documented, and verified by
-re-running it, in [`deep/06-final-final-gff.md`](../../deep/06-final-final-gff.md):
+**Two different scripts did this, written by two different people, and they do not agree.**
+Both have since been recovered into
+[`../../../evidence/lab-scripts/gene-renaming/`](../../../evidence/lab-scripts/gene-renaming/).
+`ReVamp_Final.py` is taken apart, and verified by re-running it, in
+[`06-final-final-gff.md`](../../scripts/06-final-final-gff.md):
 
 | Dataset | Script | Author | Location | Date |
 |---|---|---|---|---|
@@ -47,26 +58,47 @@ re-running it, in [`deep/06-final-final-gff.md`](../../deep/06-final-final-gff.m
 
 Nothing in the log states which supersedes which. The lab notebook's step-by-step procedure
 points at **Dataset #2**, so that is the one that was in active use as of August 2026
-*(OCR doc 02)*. `Gff_Dataset#2` is only 278 KB and contains a single subfolder,
+*(OCR doc 02)*.
+
+> **Both were used, and it matters.** Attributing the 29 finished species tables back to one
+> script or the other puts **19 on Duy's `ReVamp_Final.py` and 7 on Ayush's `NEW_Step_5_…`**.
+> The two do not produce the same annotation: ReVamp fails to rename *any* gene in an
+> orthogroup cell that lists several (about 7% of orthologous genes — 788 of 11,063 for
+> *D. arizonae*), because such cells are stored quoted and space-separated and it splits on a
+> bare comma. Those genes then carry no Cyp name and stage 3 never sees them. On
+> *D. ananassae* the difference is 57 Cyp loci found instead of 91. Stage 6 therefore compares
+> 19 species with systematically short Cyp gene sets against 7 without — see
+> [`04-gaps-and-provenance.md`](04-gaps-and-provenance.md), G4, and
+> [`06-final-final-gff.md`](../../scripts/06-final-final-gff.md). `Gff_Dataset#2` is only 278 KB and contains a single subfolder,
 `Duy_New_Scripts` — it is a script folder, not a data folder, despite the name *(OCR doc 03b)*.
 
-**If you need to rebuild this step**, you need the ortholog mapping as well as the code. The
-committed example output shows `dmel_orthologs=` and `hog=N1.HOG…` attributes on mRNA
-records. Those come from the published Zenodo annotations (record 18453526), not from this
-step; this step only swaps gene IDs for the Dmel symbol of the same HOG.
+**Where the orthology itself came from.** The renaming scripts did not compute orthology;
+they looked it up. The example outputs carry `dmel_orthologs=` and `hog=N1.HOG…` attributes on
+mRNA records, and those attributes are already present in the published Zenodo annotations
+(record 18453526). All this step did was swap a gene's own ID for the *D. melanogaster*
+symbol of the same orthogroup.
+
+**What is lost.** The HOG table itself survives
+([`../../../evidence/lab-data/hog-tables/`](../../../evidence/lab-data/hog-tables/)), but the
+code that would build one for a *new* species does not: `Step_2_…`'s `config.py` and
+`Step_1_…`'s `Dmel_HOG_association.tsv` are both gone, and the four scripts the shell history
+shows doing the original OrthoFinder post-processing
+(`Grab_data_Atallah_12_2.py`, `Rewrite_gene_names.py`, `Remove_duplicates_Atallah.py`,
+`Bulk_gffread.py`) exist nowhere at all.
 
 ### 0c. The Cyp target list ✅
 
-`pipeline-scripts-output/AnalysisForAll/Reg_Gene_Full.txt` — 96 lines, one gene symbol each.
+`evidence/te-locating-run/AnalysisForAll/Reg_Gene_Full.txt` — 96 lines, one gene symbol each.
 
 Two of its properties are load-bearing and non-obvious: it contains five entries in
 `Dvir\GJ21722` form which **both** stage 3 scripts silently skip (they skip every line
-starting with `D`), and matching is *substring* matching, not exact — see
-[`03-data-contracts.md`](03-data-contracts.md).
+starting with `D`, so the effective list is 91 symbols), and matching is *substring* matching,
+not exact — see [`03-data-contracts.md`](03-data-contracts.md).
 
-`pipeline-scripts-output/DA_Files/` also holds `Cyp_stable_genes_Good_et_al_2014.txt` and
+`evidence/te-locating-run/DA_Files/` also holds `Cyp_stable_genes_Good_et_al_2014.txt` and
 `Cyp_unstable_genes_Good_et_al_2014.txt`, a literature-derived split of Cyp genes into
-evolutionarily stable and unstable sets. Nothing in the committed code reads them.
+evolutionarily stable and unstable sets. **No surviving script reads them** — they are an
+unused split, and plausibly a more interesting one than exposure group.
 
 ---
 
@@ -75,9 +107,12 @@ evolutionarily stable and unstable sets. Nothing in the committed code reads the
 **In:** one genome FASTA. **Out:** a classified TE consensus library. **Runtime:** 8-26 h
 typical, 45 h observed with `-LTRStruct`.
 
-### Era 1 — as originally run ❌ (documented for reference)
+### As the lab ran it ✅
 
-`spinContainer.sh`, transcribed in full from a terminal photograph *(OCR doc 01)*:
+`spinContainer.sh` — transcribed from a terminal photograph *(OCR doc 01)*, and since
+recovered as
+[`../../../evidence/lab-scripts/shell/spinContainer.sh`](../../../evidence/lab-scripts/shell/spinContainer.sh),
+where it matches the photograph line for line:
 
 ```bash
 docker run -it --rm \
@@ -98,9 +133,13 @@ Because `-v $(pwd):...` mounts only the current species folder, running a second
 opening a second terminal and repeating the entire sequence. `--rm` means nothing survives
 outside the mount.
 
-### Era 2 — the committed automation ✅
+### How it was replaced ⓘ *(not in this repository)*
 
-`repeat-modeler-automation/`. Configuration is **entirely** in `rmodeler.conf`; there are no
+In September 2026 the manual session was rebuilt as an unattended worker pair,
+`repeat-modeler-automation/`. **That code is not the lab's and is no longer in this
+repository** — it lives in its own repository and is described here only because it is the
+clearest statement of what stages 1 and 2 had to do. Configuration is **entirely** in
+`rmodeler.conf`; there are no
 command-line options and no environment variables, and inherited environment values are
 discarded before the file is read. Both scripts exit 2 if the file is missing, if a setting is
 missing, if a name is misspelled, or if a value is nonsense.
@@ -125,7 +164,7 @@ RepeatModeler -database <sample> <thread flag> [-LTRStruct]
 and then, when `RUN_MASKER=1`, continues straight into stage 2 on the same genome without
 releasing the claim — see [Stage 2](#stage-2--annotate-te-locations-genome-wide-).
 
-Differences from era 1 that matter:
+Differences from the lab's own procedure that matter, and that say something about it:
 
 - **No `-engine` flag**, on either call. Current RepeatModeler (checked against 2.0.9) removed
   the option from `BuildDatabase`, so passing it is a hard `Unknown option: engine` failure.
@@ -148,8 +187,11 @@ Differences from era 1 that matter:
 | `$LOG_DIR/<sample>.log` | Full BuildDatabase/RepeatModeler output |
 | `$WORK_DIR/<sample>/` | Scratch; deleted on success unless `KEEP_WORK=1`, kept on failure |
 
-Era 1's equivalent output was `consensi.fa.classified`, alongside `families.stk`, `rmod.log`,
-`round-1`…`round-5`, `genome.2bit` and assorted `tmp*` files *(OCR doc 03c)*. Modern
+The lab's equivalent output was `consensi.fa.classified`, alongside `families.stk`, `rmod.log`,
+`round-1`…`round-5`, `genome.2bit` and assorted `tmp*` files *(OCR doc 03c)*, all of which are
+listed by name in
+[`../../../evidence/lab-environment/listing.txt`](../../../evidence/lab-environment/listing.txt).
+Modern
 RepeatModeler names the same artifact `<sample>-families.fa`. **Both names refer to the same
 thing** — the classified consensus library — and downstream documentation uses them
 interchangeably.
@@ -168,14 +210,19 @@ documented starting point. `WORK_DIR` runs **20-80 GB per genome in flight**.
 
 ---
 
-## Stage 2 — Annotate TE locations genome-wide ✅
+## Stage 2 — Annotate TE locations genome-wide ⚠
 
 **In:** the stage 1 library + the genome FASTA. **Out:** a RepeatMasker `.out` table.
 **Runtime:** typically an hour or two.
 
-### As it runs now — the committed automation
+A script called `runMasker.sh` has been recovered, and it does **not** do what every other
+source says this stage did. Read "As the lab ran it" below before anything else in this
+section.
 
-Stage 2 is part of `repeat-modeler-automation/`, not a separate tool. Set `RUN_MASKER=1` in
+### How it was replaced ⓘ *(not in this repository)*
+
+In the September 2026 automation, stage 2 is part of the same worker as stage 1, not a
+separate tool. Set `RUN_MASKER=1` in
 `rmodeler.conf` and each worker masks every genome straight after it models it, in the same job
 directory, using the library it just built:
 
@@ -216,12 +263,35 @@ If the library is missing entirely — `done/` marker present but `<sample>-fami
 the worker fails that genome with an explicit message rather than silently re-modelling it.
 Clear `done/<sample>` to rebuild from scratch.
 
-### As it ran originally ❌ (for reference)
+### As the lab ran it ⚠ — three sources, and they disagree
 
-The lab's own script, `runMasker.sh`, was never photographed and never committed, and the
-automation does not attempt to reproduce it line for line. Two sources record what it did.
+**Source 1: the recovered script.**
+[`../../../evidence/lab-scripts/shell/runMasker.sh`](../../../evidence/lab-scripts/shell/runMasker.sh)
+turned up in the lab archives. In full, it is one blank line and one command:
 
-**The command** — lab notebook *(OCR doc 02, section 1)*:
+```bash
+RepeatMasker -lib GFF_Files/Dataset_1_12_species/DROSOPHILA_PAULISTORUM_final.gff
+```
+
+Three things are wrong with it as a stage-2 invocation:
+
+- **`-lib` points at a gene annotation GFF**, not at a repeat library. RepeatMasker expects a
+  FASTA of consensus sequences there. A GFF is not one.
+- **There is no genome FASTA argument at all**, so RepeatMasker has nothing to scan.
+- **There is no `-pa`**, which the notebook explicitly records.
+
+As saved, this script cannot have produced any of the `.out` files in this repository. What it
+*is* remains open. The most economical reading is that it was edited per-run in exactly the
+way the Python scripts were — one path swapped in before each species — and this is simply the
+state it was last left in, during some unrelated experiment on the Dataset #1 annotations. The
+filename in it, `DROSOPHILA_PAULISTORUM_final.gff`, is suggestive: *D. paulistorum* is one of
+the two species whose finished TE table is **empty**.
+
+That reading is not established. What is established is that **the recovered script is not the
+command that produced the data**, and that the only records of the real command are the two
+below.
+
+**Source 2: the command** — lab notebook *(OCR doc 02, section 1)*:
 
 ```
 Repeatmasker:
@@ -233,11 +303,13 @@ Repeatmasker:
 ```
 
 `RM_#$date` stands for the dated RepeatModeler output directory — the real thing looks like
-`RM_235549.ThuJul92144222026` *(OCR doc 03c)*. "Copy & paste replace Drosophila_… w/ file" is an
-instruction to substitute the species filename by hand each time. **Treat the flag order as
-approximate**; it is a handwritten paraphrase.
+`RM_235549.ThuJul92144222026` *(OCR doc 03c)*, and such directories are listed by name in
+[`../../../evidence/lab-environment/listing.txt`](../../../evidence/lab-environment/listing.txt).
+"Copy & paste replace Drosophila_… w/ file" is an instruction to substitute the species
+filename by hand each time. **Treat the flag order as approximate**; it is a handwritten
+paraphrase.
 
-**The procedure** — Kaur write-up *(OCR doc 05, pages 2-3)*:
+**Source 3: the procedure** — Kaur write-up *(OCR doc 05, pages 2-3)*:
 
 > 1.) Copy the RepeatModeler output (consensi.fa.classified) into the RepeatMasker folder (it
 >     should already be there from when we ran RepeatModeler).
@@ -246,29 +318,34 @@ approximate**; it is a handwritten paraphrase.
 
 The parenthetical in step 1 is the operationally significant detail — RepeatMasker ran **in the
 same per-species working directory as RepeatModeler**, so the library was already in place and
-nothing was copied anywhere. The automation does exactly the same thing, for the same reason.
+nothing was copied anywhere. The later automation does the same thing, for the same reason.
+
+Sources 2 and 3 agree with each other and with the shape of the surviving `.out` files. Source
+1 agrees with nothing. Since the notebook and the write-up are independent of each other, the
+custom-library run they both describe is what is taken as the real stage 2 throughout this
+documentation.
 
 ### Which container did this run in?
 
 **The same image, not a separate one.** `dfam/tetools:latest` bundles RepeatMasker alongside
 RepeatModeler, RECON, RepeatScout, TRF and rmblast. No second image is named anywhere in the
 archive, and none is needed — which is what makes the write-up's *"it should already be there"*
-true. The committed worker relies on this too: it runs both stages out of `RM_IMAGE`.
+true. The later worker relies on this too: it runs both stages out of `RM_IMAGE`.
 
-**A separate container instance, though.** Era 1's `spinContainer.sh` ran `-it --rm … bash`, so
+**A separate container instance, though.** The lab's `spinContainer.sh` ran `-it --rm … bash`, so
 the container died when the shell exited; and per the log, masking was handed to a collaborator
-over OneDrive *(OCR doc 04)* — a different machine entirely. The committed worker also uses a
+over OneDrive *(OCR doc 04)* — a different machine entirely. The later worker also uses a
 separate container per stage, named `<sample>-db`, `<sample>-rm` and `<sample>-mask`, so each
 can be stopped by name on shutdown.
 
-> **Open question, now only of historical interest.** Whether `runMasker.sh` was its own
-> `docker run` wrapper or a script executed inside a shell started by `spinContainer.sh` is not
-> established, and the script was never photographed. It no longer blocks anything — the
-> automation supersedes both scripts — but it is the reason the original flag list cannot be
-> confirmed.
+> **Open question.** Whether the real `runMasker.sh` was its own `docker run` wrapper or a
+> script executed inside a shell started by `spinContainer.sh` is still not established. The
+> recovered file settles nothing: it contains no `docker` invocation, but it also contains no
+> working RepeatMasker invocation. Its relative path (`GFF_Files/…`) implies it was run from
+> some working directory that is not recorded anywhere.
 
-**Committed example outputs** from era 1 are in `pipeline-scripts-output/DA_Files/` and
-`pipeline-scripts-output/AnalysisForAll/FilesFromMasker/`, e.g.
+**Surviving example outputs** are in `evidence/te-locating-run/DA_Files/` and
+`evidence/te-locating-run/AnalysisForAll/FilesFromMasker/`, e.g.
 `Drosophila_ananassae.GCF_017639315.1.rm.fna.out` — 39 MB and 297,073 lines.
 
 ---
@@ -278,10 +355,15 @@ can be stopped by name on shutdown.
 **In:** annotation GFF3 + Cyp symbol list + RepeatMasker `.out`.
 **Out:** one table per species. **Runtime:** seconds.
 
-Three scripts in `pipeline-scripts-output/`, run in order. All three currently carry
-**hardcoded absolute Windows paths at module scope** and take no arguments — the paths are
-edited before each run. This is the residue of the era 1 procedure and is the single biggest
-obstacle to automating the stage.
+Three scripts in [`../../../evidence/te-locating-run/`](../../../evidence/te-locating-run/),
+run in order. All three carry **hardcoded absolute Windows paths at module scope** and take no
+arguments — the paths were edited before each run.
+
+A second set of the same three scripts, with different paths baked in, sits in
+[`../../../evidence/lab-scripts/te-locating/`](../../../evidence/lab-scripts/te-locating/).
+`Locate_TE.py` differs between the two copies in exactly two lines, both of them paths: one
+copy is set up for *D. ananassae*, the other for *D. melanogaster*. The edit-save-run cycle
+the notebook describes is preserved here as two files.
 
 ### 3a. `repeatOpp.py` — restrict the annotation to Cyp genes
 
@@ -290,7 +372,7 @@ target symbol appears anywhere in the attributes column. Writes `filtered.gff`.
 
 > **Defect — row duplication.** One row is emitted per *matching symbol*, not per gene. A gene
 > annotated `Name=Cyp313a5,Cyp313a2,Cyp313a3,Cyp313a1` is written four times. Measured on the
-> committed *D. ananassae* example: **166 rows, 91 unique, 57 distinct gene names**, from 117
+> surviving *D. ananassae* example: **166 rows, 91 unique, 57 distinct gene names**, from 117
 > gene records in. The duplication multiplies through stage 3b.
 
 ### 3b. `Locate_TE.py` — the actual TE-to-gene association
@@ -328,13 +410,13 @@ repeats here. Fine at this scale; it will not survive a whole-genome gene set.
 Replaces the 200-character attribute blob with the bare matched gene symbol, using the same
 `Reg_Gene_Full.txt`. Output `DAnasse_TE_Cyp.txt` — 900 rows, 50 distinct genes.
 
-The filename is hardcoded and species-specific; era 1 renamed the result by hand to
+The filename is hardcoded and species-specific; the operator renamed the result by hand to
 `D_<species>GenesAffectedByTE.txt` *(OCR doc 02, Step 3)*. The 29 files in
 `AnalysisForAll/output/` are those renamings — including three hand-typing errors
 (`D_secheliaGenesAffectedByT.txt`, `D_athabascaGenesAfffectedByTE.txt`,
 `D_arawakanaGenesAffectedByTe.txt`).
 
-### The era 1 procedure, for the record
+### The procedure, for the record
 
 From the lab notebook *(OCR doc 02)*, confirmed independently by the write-up *(OCR doc 05)*:
 
@@ -353,7 +435,9 @@ Three edit-save-run cycles per species, twenty-nine species.
 **In:** stage 3 table + annotation GFF3 + genome sequence. **Out:** one combined GFF3 per
 species. **Runtime:** minutes.
 
-`analysis-pipeline/build_tfbs_te_gff 1.py`. Six internal phases:
+[`../../../evidence/analysis-scripts/build_tfbs_te_gff 1.py`](../../../evidence/analysis-scripts/).
+Note the ` 1` in the filename: as delivered this file cannot be imported, and two of the three
+stage 6 scripts import a sibling of it. Six internal phases:
 
 1. Parse the stage 3 TE table into records, **de-duplicating** (compensating for the stage 3a
    defect above).
@@ -391,11 +475,11 @@ Multiple species can instead be sections of one `species_config.ini`, selected w
 **`--skip-tfbs` has a downstream consequence**: the output then contains no `TF_binding_site`
 records, and the CncC comparison in stage 6 has nothing to filter on for that species. The
 `jaspar_cache/` directory visible in `Summer26/JBrowse_gff_creator/` *(OCR doc 03a)* confirms
-the JASPAR download step really ran in era 1.
+the JASPAR download step really did run.
 
 ---
 
-## Stage 5 — Visualise in JBrowse ✅ (manual)
+## Stage 5 — Visualise in JBrowse ❌ (no script; a person clicking)
 
 **In:** combined GFF3 + genome FASTA. **Out:** a genome browser view. No script.
 
@@ -420,8 +504,9 @@ Saved sessions exist for three species only — `Dmelanogaster_simulans_sechelli
 **Runtime:** seconds.
 
 Three scripts, same machinery, progressively narrower gene sets. Scripts 2 and 3 `import
-compare_te_cyp_exposure`, so all three must sit in one directory **under importable names** —
-see the filename caveat in [`04-gaps-and-provenance.md`](04-gaps-and-provenance.md).
+compare_te_cyp_exposure`, so all three must sit in one directory **under importable names**.
+As delivered they do not, which means two of the three could never have run in the form they
+arrived in — see [`04-gaps-and-provenance.md`](04-gaps-and-provenance.md).
 
 ```mermaid
 flowchart TD

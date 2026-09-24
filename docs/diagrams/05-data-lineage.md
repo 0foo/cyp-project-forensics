@@ -1,11 +1,12 @@
 # Data lineage
 
-Every data file committed to this repository, and what produced it.
+Every data file in the archive, and what produced it.
 
 ## The *D. ananassae* worked example
 
-`pipeline-scripts-output/` preserves one species end to end — every intermediate, in order.
-It is the best available specification of what Stage 2 does, because you can diff the files.
+`evidence/te-locating-run/` preserves one species end to end — every intermediate, in order.
+It is the best available specification of what this stage did, because the files can be
+diffed against each other.
 
 ```mermaid
 flowchart TD
@@ -75,6 +76,46 @@ flowchart LR
 and `GenesAffectedByTEs.txt` above, under batch-run names — confirming the three-step shape
 was stable across both runs.
 
+## The split upstream of the batch
+
+The 29 tables did not all come down the same path. The annotation each one started from was
+produced by one of **two different renaming scripts**, written independently by two people,
+which do not agree with each other:
+
+```mermaid
+flowchart TD
+    Z[("Zenodo annotations<br/>301 species, hog= attributes")]
+    H[("HOG_OG_association_…_10_31.tsv")]
+
+    Z --> D
+    H --> D
+    Z --> A
+    H --> A
+
+    D["ReVamp_Final.py  (Duy)<br/>rewrites ID=<br/>splits cells on ','"]
+    A["NEW_Step_5_… (Ayush)<br/>rewrites Name=<br/>parses cells properly"]
+
+    D --> DO[("change_SPECIES_final_final.gff<br/>25 files in evidence/lab-data/renamed-annotations/")]
+    A --> AO[("SPECIES_final_withDmelNames.gff<br/>1 truncated copy in DA_Files/")]
+
+    DO -->|"19 species"| OUT[("AnalysisForAll/output/<br/>29 tables")]
+    AO -->|"7 species"| OUT
+    UNK["eugracilis, paulistorum (empty)<br/>melanogaster (no renaming needed)"] -.->|"3, undeterminable"| OUT
+
+    style D fill:#ffe9e0,stroke:#c05a2a
+    style DO fill:#ffe9e0,stroke:#c05a2a
+    style A fill:#e6f7e6,stroke:#4a9a4a
+    style AO fill:#e6f7e6,stroke:#4a9a4a
+```
+
+The red path loses roughly 7% of orthologous genes — every gene in an orthogroup cell that
+lists more than one — so the 19 tables on that branch under-count Cyp loci in exactly the
+multi-copy gene families the study is about. Neither the tables nor anything else in the
+archive records which branch a given species took; the attribution above was reconstructed by
+asking, for every TE row, which renamed annotation could account for it.
+
+Full working: [`../scripts/06-final-final-gff.md`](../scripts/06-final-final-gff.md).
+
 ## Reference gene lists
 
 ```mermaid
@@ -100,13 +141,13 @@ these lists.
 
 "Stable" and "unstable" refer to Good et al. 2014's classification of Cyp gene copy-number
 stability across *Drosophila*. Both lists are merged for filtering; the distinction is not
-used by any committed script.
+used by any surviving script.
 
 ## What is missing
 
 ```mermaid
 flowchart LR
-    A["analysis-pipeline/"] -.->|"needs"| B["species_config.example.ini"]
+    A["evidence/analysis-scripts/"] -.->|"needs"| B["species_config.example.ini"]
     A -.->|"needs"| C["te_cyp_species_config.example.ini"]
     A -.->|"needs"| D["xenobiotic_resistance_cyp_genes.example.txt"]
 
@@ -116,5 +157,7 @@ flowchart LR
 ```
 
 All four scripts reference these three example files by name in their docstrings, help text
-and error messages. **None of them exist in the repository.** Formats are documented in
-`docs/deep/06-data-formats.md`; you will need to write your own.
+and error messages. **None of them are in the archive** — nor are the real configs those
+templates were for, which means the exact species-to-exposure-group assignment the lab used is
+not recorded anywhere. The formats themselves are reconstructable, and are specified in
+[`../pipeline/detailed/03-data-contracts.md`](../pipeline/detailed/03-data-contracts.md).
