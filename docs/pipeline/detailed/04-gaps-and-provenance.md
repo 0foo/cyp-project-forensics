@@ -27,12 +27,21 @@ Neither `ReVamp_Final.py` (Duy, Dataset #2) nor
 `NEW_Step_5_Replace_gff_Names_with_Dmelanogaster_1_9.py` (Ayush, Dataset #1) is committed
 *(OCR doc 04)*.
 
+**Update (2026-09-24): partly closed.** Both scripts, the HOG table they read and the 26
+finished `change_<SPECIES>_final_final.gff` files have been recovered into `to_organize/`
+(untracked). `ReVamp_Final.py` was re-run on D. arizonae from the Zenodo annotations and
+reproduces the original exactly, apart from formatting. What is still missing is the code to
+build the HOG table for a *new* species (Step 2's `config.py` and Step 1's
+`Dmel_HOG_association.tsv`). Details and run instructions:
+[`deep/06-final-final-gff.md`](../../deep/06-final-final-gff.md).
+
 **Impact:** you cannot add a new species to the study. Every existing species' annotation was
 already renamed; a new one cannot be, so it will match nothing in `Reg_Gene_Full.txt`. With G1
 closed, this is now the only thing standing between a raw genome and a finished comparison.
 
 **Severity: harder than G1.** It needs both the code and the ortholog assignment behind it.
-The committed output shows the mapping came from hierarchical orthogroups (`hog=N1.HOG…`), so
+The committed output shows the mapping came from hierarchical orthogroups (`hog=N1.HOG…`; these
+attributes are already present in the published Zenodo annotations), so
 it is reproducible in principle, but not by copying a one-line command.
 
 **Also unresolved:** which dataset supersedes the other. The log describes both without

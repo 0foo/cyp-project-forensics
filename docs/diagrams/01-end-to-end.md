@@ -86,7 +86,9 @@ repository. (The lab's own `runMasker.sh`, known from the archive photographs �
 
 **One required step still has no code here**: the annotation GFF whose `Name=` attributes are
 already *D. melanogaster* Cyp symbols. Producing that was the job of `ReVamp_Final.py` /
-`NEW_Step_5_Replace_gff_Names_with_Dmelanogaster_1_9.py`, neither of which was committed.
+`NEW_Step_5_Replace_gff_Names_with_Dmelanogaster_1_9.py`, neither of which was committed. Both
+have since been recovered into `to_organize/` — see
+[`../deep/06-final-final-gff.md`](../deep/06-final-final-gff.md).
 
 So: with genomes alone you now get all the way to a located-repeat table. To go further you
 also need a renamed `*.gff` for that species — existing species have one, a new species would

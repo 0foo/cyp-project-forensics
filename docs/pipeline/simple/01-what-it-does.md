@@ -110,8 +110,9 @@ table in one pass.
 
 **The one remaining gap is upstream of all of it**: the step that relabels each species' gene
 annotation with *D. melanogaster* ortholog names. That was done by scripts (`ReVamp_Final.py`,
-`NEW_Step_5_Replace_gff_Names_with_Dmelanogaster_1_9.py`) that were never committed and survive
-only as names in the lab notebook and log *(OCR docs 02, 04)*.
+`NEW_Step_5_Replace_gff_Names_with_Dmelanogaster_1_9.py`) that were never committed. They have
+since been found in `to_organize/`, and `ReVamp_Final.py` has been re-run and checked — see
+[`../../deep/06-final-final-gff.md`](../../deep/06-final-final-gff.md).
 
 In practice: with a genome FASTA you can get all the way to a `.out` table. To go further you
 also need an annotation GFF3 for that species with ortholog names already applied — existing

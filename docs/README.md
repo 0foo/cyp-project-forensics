@@ -34,8 +34,10 @@ by number, e.g. *(OCR doc 04)*.
 
 ## The short version of what you will find
 
-- The pipeline has **six stages**; one preparatory step (relabelling gene annotations with
-  *D. melanogaster* ortholog names) still has no code in this repository.
+- The pipeline has **six stages**, plus one preparatory step: relabelling gene annotations
+  with *D. melanogaster* ortholog names, which produces the `final_final` GFFs. Its code was
+  recovered into `to_organize/` (not yet committed) and re-run — see
+  [`deep/06-final-final-gff.md`](deep/06-final-final-gff.md).
 - Stage 1 takes **8-26 hours per genome**, which is why it looks like infrastructure while
   everything else looks like scripts.
 - Everything funnels through **one small file format** between stages 3 and 4 — that is the

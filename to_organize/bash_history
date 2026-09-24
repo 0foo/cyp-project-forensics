@@ -1,0 +1,2000 @@
+cd Orthogroups_Ganes
+python Grab_data_Atallah_12_2.py
+cd Orthogroups_Genes
+python Grab_data_Atallah_12_2.py
+cd OrthoFinder
+cd orthotry
+cd 03_29
+cd Ortho_12_species
+cd OrthoFinder
+cd Results_Mar29_1
+cd Orthogroups_Genes
+python Grab_data_Atallah_12_2.py
+python Grab_data_Atallah_12_3.py
+python Grab_data_Atallah_12_2.py
+cd OrthoFinder
+cd orthotry
+cd 03_29
+cd Ortho_12_species
+cd OrthoFinder
+cd Results_Mar29_1
+cd Orthogroups+Genes
+cd Orthogroups_Genes
+python Grab_data_Atallah_12_2.py
+python Grab_data_Atallah_12.py
+cd OrthoFinder
+cd orthotry
+cd 03_29
+cd Ortho_12_species
+cd OrthoFinder
+cd Results_Mar29_1
+python Remove_duplicates_Atallah.py
+python Rewrite_gene_names.py
+python Remove_duplicates_Atallah.py
+ls
+python D:/CYP_Gene_Project/04_24/04_22/All_Input/Bulk_gffread.py
+cd ..
+python D:/CYP_Gene_Project/04_24/04_22/All_Input/Bulk_gffread.py
+ls
+cd ..
+ls
+cd home
+ls
+cd ..
+python D:/CYP_Gene_Project/04_24/04_22/All_Input/Bulk_gffread.py
+python CYP_Gene_Project/04_24/04_22/All_Input/Bulk_gffread.py
+cd home
+ls
+cd ..
+cd mnt
+ls
+cd d
+ls
+python CYP_Gene_Project/04_24/04_22/All_Input/Bulk_gffread.py
+ls
+cd CYP_Gen_Project
+cd CYP_Gene_Project
+ls
+cd 04_24
+ls
+cd 04_22
+python Bulk_gffread.py
+ls
+cd All_Input
+python Bulk_gffread.py
+cd ..
+ls
+cd ..
+ls
+cd mnt
+cd d
+cd CYP_Gene_Project
+cd 04/24
+cd 04_24/04_22/All_Input
+gffread GCF_003286085.1_DperRS2_genomic.gff -g GCF_003286085.1_DperRS2_genomic.fna -y D_persimilis_prot
+gffread DROSOPHILA_BOCQUETI_final.gff -g Drosophila_bocqueti.GCA_018151655.1.rm.fna -y D_bocqueti_prot
+gffread DROSOPHILA_ARAWAKANA_final.gff -g Drosophila_arawakana.GCA_0.18151165.1.rm.fna -y D_arawakana_prot
+gffread DROSOPHILA_ARAWAKANA_final.gff -g Drosophila_arawakana.GCA_018151165.1.rm.fna -y D_arawakana_prot
+gffread GCF_003286085.1_DperRS2_genomic.gff -g GCF_003286085.1_DperRS2_genomic.fna -y D_persimilis_prot
+gffread DROSOPHILA_CONFORMIS_final.gff -g Drosophila_conformis.nanopore.rm.fna -y D_conformis_prot
+gffread DROSOPHILA_BIARMIPES_final.gff -g Drosophila_biarmipes.GCF_025231255.1.rm.fna -y D_biarmipes_prot
+gffread DROSOPHILA_BIPECTINATA_final.gff -g Drosophila_bipectinata.GCF_018153845.1.rm.fna -y D_bipectinata_prot
+gffread DROSOPHILA_BUSCKII_final.gff -g Drosophila_busckii.nanopore.rm.fna -y D_busckii_prot
+gffread DROSOPHILA_BUSCKII_final.gff -g Drosophila_busckii.GCF_011750605.1.rm.fna -y D_busckii_prot
+python orthofinder.py -f output_folder
+cd ..
+python orthofinder.py -f 04_24/04_22/All_Input/output_folder
+cd 04_24/04_22/All_Input
+python Grab_data_Atallah_50_new.py
+cd ..
+python Remove_duplicates_Atallah_50.py
+python Dmel_CG_to_names.py
+python Count_cyp_genes_4_28.py
+cd All_Input
+python Grab_data_Atallah_50_new.py
+cd ..
+cd mnt
+cd d
+cd CYP_Gene_Project
+cd 04_24
+cd 04_22/All_Input
+python Grab_data_Atallah_50.py
+python Grab_data_Atallah_50_new.py
+cd ..
+cd  mnt/d/CYP_Gene_Project/04_24/04_22/All_Input
+python Grab_data_Atallah_50_new.py
+cd ..
+python Remove_duplicates_Atallah_50.py
+python Dmel_CG_to_names.py
+python Count_cyp_genes_4_28.py
+python Extract_Cyp_New_4_30.py
+python Cyp_Gene_Count_4_30.py
+python Cyp_Gene_Totals_5_1.py
+python Cyp_Gene_Totals_New_5_1.py
+cd ..
+cd d
+cd mnt
+cd d
+cd CYP_Gene_Project
+cd 04_24
+cd 04_22
+python Cyp_Gene_Totals_New_5_1.py
+cd /
+ls
+cd mnt
+ls
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd 2025_06
+ls
+python Step_1_Create_species_list.py
+python Step_2_Bulk_gffread.py
+python Step_1_Create_species_list.py
+python Step_2_Bulk_gffread.py
+python Step_1_Create_species_list.py
+python Step_2_Bulk_gffread.py
+python Step_3_Replace_dot_with_X.py 
+python Step_3_Replace_dot_with_X.py
+cd /
+ls
+cd mnt
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+orthofinder -h
+python orthofinder -h
+python orthofinder.py -h
+cd /mnt/d
+ls
+cd CYP_Gene_Project/
+ls
+cd 2025_06/
+ls
+python Step_4_Rename_files.py
+cd /mnt/d/
+ls
+cd CYP_Gene_Project/
+ls
+cd 2025_06/
+cd Test/
+ls
+python Cyp_Gene_Totals_New_5_1.py 
+cd ..
+ls
+python test.py
+ls
+cd /mnt/d
+ls
+cd CYP_Gene_Project/
+ls
+orthofinder.py -f 2025_06/protein_files -t 32 -a 10
+ls
+python orthofinder.py -f 2025_06/protein_files -t 32 -a 10
+cd 2025_06/
+ls
+python Step_4_Rename_files.py 
+cd ..
+ls
+python orthofinder.py -f 2025_06/protein_files_dot_replaced_with_x -t 32 -a 10
+cd /
+cd mnt
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd 2025_06
+ls
+python test_delete.py
+ls
+python Step_7_Grab_data_Atallah_50_new.py
+cd /mnt/d/
+ls
+cd CYP_Gene_Project/
+ls
+cd Kim_et_al_2024_alignment/
+ls
+cat drosophila.hal. > drosophila.hal
+cat drosophila.hal.* > drosophila.hal
+cd mnt/d
+cd /mnt/d
+ls
+cd CYP_Gene_Project/
+ls
+cd 2025_08
+ls
+python annotate_tree_with_Cyp_stats.py
+cd /d/mnt
+cd /mnt/d/
+ls
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+python Step_1_Replace_RNA_identifiers_with_gene_names.py
+cd /mnt/
+ls
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+
+python Step_1_Replace_RNA_identifiers_with_gene_names.py 
+python Step_1_Replace_RNA_identifiers_with_gene_names.py
+cd /mnt/d
+cd CYP_Gene_Project/
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+python Step_1_Replace_RNA_identifiers_with_gene_names.py
+cd /mnt/d
+ls
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+python Step_1_Replace_RNA_identifiers_with_gene_names.py 
+cd /mnt
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+python Step_1_Replace_RNA_identifiers_with_gene_names.py 
+ls
+cd ..
+ls
+cd ..
+ls
+cd mnt
+ls
+cd d
+cd CYP_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_2_Remove_Duplicate_gene_names.py
+python Step_3_Count_CYP_Genes.py
+python Step_3_Count_CYP_Genes_Copy.py
+cd ..
+cd mnt
+ls
+cd d
+ls
+cd Cyp_Gene_Project
+ls
+cd Dhakad_et_al_2025_Data_Analysis
+ls
+python Step_3_Count_CYP_Genes_Copy.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_3_Count_CYP_Genes_Copy.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_3_Count_CYP_Genes_Copy.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_3_Count_CYP_Genes_Copy.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_3_Count_CYP_Genes_Copy.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Analysis
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_3_Count_CYP_Genes_Copy.py
+python Step_4_Extract_CYP_Genes.py
+python Step_4a_Rearrange_Cyp_Genes.py
+history
+python Replace_gff_genes_with_Dmelanogaster.py
+cd ..
+cd mnt
+cd d
+cd CYP_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Replace_gff_genes_with_Dmelanogaster.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+ls
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+cd ..
+cd mnt
+cd d
+cd CYP_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+cd ..
+cd d
+cd ..
+ls
+cd home
+cd d
+ls
+cd genomics
+ls
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+ls
+cd Dhakad_et_al_2025_Data_Analysis
+ls
+python Step_5_Replace_gff_Names_gff_Dmelanogaster.py
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+cd ..
+cd  mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_Analysis
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+cd ..
+cd mnt
+cd d
+cd Cyp_gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+python Step_5_Replace_gff_Names_with_Dmelanogaster_Copy.py
+cd ..
+cd d
+ls
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakaded_et_al_2025_Data_Analysis
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+cd ..
+cd mnt
+cd d
+cd Dhakad_et_al_2025_Data_Analysis
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Genes_with_Dmelanogaster.py
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+python Step_5_Replace_gff_Names_with_Dmelanogaster_Copy.py
+cd ..
+cd d
+ls
+cd mnt
+cd d
+cd Cyp_Gene_Project
+ls
+cd Dhakad_et_al_2025_Data_Analysis
+ls
+python Step_5_Replace_gff_Names_with_Dmelanogaster_Copy.py
+python Step_5_Replace_gff_Names_with_Dmelanogaster_10_29.py
+python Step_1_Replace_RNA_identifiers_with_gene_names_Redo.py
+python Step_2_Remove_Duplicate_gene_names_10_31.py
+python Step_3_Count_CYP_Genes_Copy_10_31.py
+python Step_5_Replace_gff_Names_with_Dmelanogaster_10_31.py
+history
+python Step_4_Extract_CYP_Genes.py
+python Step_5_Replace_gff_Names_with_Dmelanogaster_11_5.py
+cd ..
+cd d
+cd mnt
+cd c
+ls
+cd ..
+ls
+cd d
+ls
+cd Cyp_gene_Project
+python Step_5_Replace_gff_Names_with_Dmelanogaster_11_5.py
+ls
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster_11_5.py
+python Step_5_Replace_gff_Names_with_Dmelanogaster.py
+python Step_5_Replace_gff_Names_with_Dmelanogaster_11_13.py
+python Step_5_Replace_gff_Names_with_Dmelanogaster_11_16.py
+cd ..
+cd d
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster_12_1.py
+cd ..
+cd mnt
+cd d
+cd CYP_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster_12_1.py
+cd ..
+cd mnt
+cd d
+cd Dhakad_et_al_2025_Data_Analysis
+ls
+cd Cyp_Gene_Project
+cd ..
+cd d
+cd CYP_Gene_Project
+ls
+cd ..
+ls
+cd d
+ls
+cd CYP_Gene_Project
+cd ,,
+cd ..
+cd mnt
+cd d
+cd CYP_Gene_Project
+cd ..
+ls
+cd ..
+c d..
+cd ..
+cd mnt
+cd d
+cd CYP_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster_12_1.py
+ls
+kls
+ls
+cd Gene_expression/
+ls
+cd ..
+ls
+cd ..
+ls
+cd D
+cd ..
+ls
+cd B
+cd ..
+cd.
+cd ..
+ls
+cd D
+python
+ls
+cd S
+cd Synteny/
+ls
+cd ..
+cd cactus/
+ls
+cd ..
+ls
+pyhon Final_Step5.py
+python Final_Step5.py
+mkdir test_file_Duy
+ls
+cd test_file_Duy/
+touch Final_Step5.py
+ls
+vim Final_Step5.py 
+ls
+cd test_file_Duy/
+ls
+code .
+ls
+vim Final_Step5.py 
+ls
+cd test_file_Duy/
+ls
+python Final_Step5.py 
+ls
+cd C
+cd ..
+ls
+cd ..
+ls
+cd usr
+ls
+cd home
+ls
+cd anaconda3/
+ls
+cd CYP*
+cd /
+ls
+cd mnt/d
+ls
+cd CYP_
+cd CYP_*
+cd Dhakad*
+cd Duy*
+ls
+code .
+clear
+python Final*
+clear
+python Final*
+clear
+clear
+python New_Step_5*
+ls ..
+cd ../Dhakad_et_al_2025_Data
+ls
+cd annotations_copy_2
+ls
+ls\
+ls
+cd ..
+ls
+cd 2025_07*
+ls
+cd ..
+ls
+cd Dhakad*
+ls
+clear
+ls
+python New_Step_5*
+python New_Step_1*
+python Step_1*
+python New_Step_5*
+ls
+exit
+ls
+python & C:/Users/Genomics/AppData/Local/Microsoft/WindowsApps/python3.13.exe d:/CYP_Gene_Project/Dhakad_et_al_2025_Data_Analysis/Duy_Scripts/Final_Step5.py
+& C:/Users/Genomics/AppData/Local/Microsoft/WindowsApps/python3.13.exe d:/CYP_Gene_Project/Dhakad_et_al_2025_Data_Analysis/Duy_Scripts/Final_Step5.py
+ls
+cd anaconda3/
+ls
+cd ..
+ls
+cd orth*
+cd OrthoFinder/
+ls
+cd CYP_Gene_Project/
+;s
+ls
+cd ..
+ls
+cd ..
+ls
+cd -a
+ls
+cd OrthoFinder/
+ls
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_DataAnalysis
+cd D
+cd ..
+cd D
+ls
+cd ..
+cd D
+ls
+D
+d
+cd mnt
+ls
+d
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+cd Copy_toDuy/
+ls
+cd ..
+cd Duy_Scripts/
+ls
+clear
+python Final_Step5.py
+python
+h5py
+pip install h5py
+ls
+cd OrthoFinder/
+ls
+cd CYP_Gene_Project/
+ls
+cd ..
+ls
+cd mnt/
+d
+ls
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+Dhakad_et_al_2025_Data_Analysis/
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+mkdir RepeatMasker
+cd RepeatMasker/
+touch tf_repeatmasker.py
+code .
+cd ..
+code .
+ls
+cd RepeatMasker/
+ls
+python tf_repeatmasker.py
+ls
+cd ..
+ls
+cd ..
+ls
+cd d
+clear
+ls
+ls CYP_Gene_Project/
+ls
+clear
+ls
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+cd Copy_toDuy/
+ls
+clear
+ls
+cd ..
+ls
+cd Duy_Scripts/
+ls
+python Final_Step5.py 
+cd ..
+cd d
+cd mnt
+cd d
+cd CYP_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+python Step_5_Replace_gff_Names_with_Dmelanogaster_1_8.py
+ls
+wsl
+cd ..
+cd d
+cd ..
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+cd Duy_Scripts/
+ls
+python Final_Step5.py 
+wsl
+ls
+cd ..
+ls
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+cd Duy_Scripts/
+ls
+python Final_Step5.py 
+clear
+python Step_5*
+pwd
+python Step_5*
+ls
+cd ..
+c d..
+cd ..
+cd d
+cd mnt
+cd d
+cd CYP_Gene_Project
+ls
+cd Dhakad_et_al_2025_data_Analysis
+ls
+python Step_5_Replace_gff_Names_with_Dmelanogaster_1_8.py
+python Step_5_Replace_gff_Names_with_Dmelanogaster_11_16.py
+python Step_5_Replace_gff_Names_with_Dmelanogaster_1_8.py
+python Step_5_Replace_gff_Names_with_Dmelanogaster_11_16.py
+Step_1_Replace_RNA_identifiers_with_gene_names_Redo.py
+ls
+python Step_1_Replace_RNA_identifiers_with_gene_names_Redo.py
+cd terry-scripts-main
+python New_Step_2_Remove_Duplicate_gene_names_10_31.py
+cd ..
+python Step_5_Replace_gff_Names_with_Dmelanogaster_1_9.py
+NEW_Step_5_Replace_gff_names_with_Dmelanogaster_1_9.py
+python NEW_Step_5_Replace_gff_names_with_Dmelanogaster_1_9.py
+cd ..
+cd Dhakad_et_al_2025_data_Analysis
+ls
+cd Duy_Scripts
+python Final_Step5.py
+cd ..
+cd reVamp_Duy_Scripts
+python ReVamp_Final.py
+python ReVamp_Final_copy_1_10.py
+cd ..
+cd LBRN_Figures
+python New_Step_3_Count_CYP_Genes_1_13.py
+cd Cyp_gene_counts
+python New_Step_3_Count_CYP_Genes_1_13.py
+python New_Step_4_Extract_Goodetal_CYP_Genes.py
+python New_Step_4_Extract_Dermauw_CYP_Genes.py
+clear
+cd ..
+cd d
+ls
+cd ..
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+cd reVamp_Duy_Scripts/
+ls
+cd ..
+code .
+code *
+pip install pandas
+ls
+cd Dhakad_et_al_2025_Data/
+ls
+cd ..
+cd Dhakad_et_al_2025_Data/
+ls
+cd ..
+cd reVamp_Duy_Scripts/
+ls
+clear
+ls
+python ReVamp_Final
+ls
+python ReVamp_Final
+ls
+python ReVamp_Final.py
+pip install pandas
+pip upgrade python
+python -V
+python --version
+python ReVamp_Final.py
+copy_1_10.py
+/mnt/d/CYP_Gene_Project/Dhakad_et_al_2025_data_Analysis/reVamp_Duy_Scripts/ReVamp_Final_copy_1_10.py:157: SyntaxWarning: invalid escape sequence '\{'
+/mnt/d/CYP_Gene_Project/Dhakad_et_al_2025_data_Analysis/reVamp_Duy_Scripts/ReVamp_Final_copy_1_10.py:157: SyntaxWarning: invalid escape sequence '\C'
+Traceback (most recent call last):
+clear
+python ReVamp_Final.py
+ls
+python ReVamp_Final.py
+ls
+cd ..
+cd mnt\
+cd mnt
+cd d
+cd CYP_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+cd LBRN_Figures
+cd Jbrowse
+python Reduce_gff_files.py
+cd ..
+cd mnt
+cd d
+cd CYP_Gene_Project
+ls
+cd RepeatModeler
+perl -v
+trf409.linux64
+cp RepeatMasker-open-4-#-#.tar.gz
+cp --help
+cp RepeatMasker-open-4-#-#.tar.gz /usr/local
+ls
+cp RepeatMasker-open-4-2-3.tar.gz /usr/local
+cp RepeatMasker-4.2.3.tar.gz /usr/local
+gunzip RepeatMasker-open-4.2.3.tar.gz
+ls
+gunzip RepeatMasker-4.2.3.tar.gz
+ls
+tar xvf RepeatMasker-4.2.3.tar
+ls
+gunzip dfam_full.14.h5
+gunzip dfam_full.14.h5.gz
+gunzip dfam39_full.14.h5.gz
+perl ./configure
+ls
+cd /RepeatMasker
+cd RepeatMasker
+perl ./configure./configure
+cd ..
+cd RepeatMasker
+perl ./configure
+cd .
+cd ..
+tar -xvfz RepeatScout-1.0.7.tar.gz
+gunzip RepeatScout-1.0.7.tar.gz
+-xvfz RepeatScout-1.0.7.tar
+tar -xvfz RepeatScout-1.0.7.tar
+tar -xvf RepeatScout-1.0.7.tar
+cd RepeatScout-1.0.7
+make
+cd ..
+tar zxvf rmblast-2.14.1+-x64-linux.tar.gz
+cd RepeatMasker
+perl ./configure -rscout_dir .. -recon_dir ..
+make
+make install
+cd ..
+tar zxvf RepeatAfterMe-RepeatAfterMe_V0.0.7.tar.zip
+ls
+gunzip RepeatAfterMe-RepeatAfterMe-V0.0.7.tar.gz
+tar zxvf RepeatAfterMe-RepeatAfterMe_V0.0.7.tar.gz
+ls
+cd RepeatAfterMe-RepeatAfterMe_V0.0.7
+make
+./test_suite
+make install
+cd ..
+rsync -aP hgdownload.soe.ucsc.edu::genome/admin/exe/linux.x86_64/ ./
+wget https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/lift0ver
+rsync -aP rsync://hgdownload-sd.soe.ucsc.edu/genome/admin/exe/linux.x86_64/ ./
+rsync -aP rsync://hgdownload.soe.ucsc.edu/genome/admin/exe/linux.x86_64/ ./
+rsync -aP rsync://hgdownload.soe.ucsc.edu/genome/admin/exe/linux.x86_64
+rsync -aP rsync://hgdownload.soe.ucsc.edu/genome/admin/exe/linux.x86_64/
+rsync -aP hgdownload.soe.ucsc.edu::genome/admin/exe/linux.x86_64/ ./
+ls
+cd D
+cd d
+cd ..
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+cd 12_species_genomes/
+docker images
+docker pull/tetools:latest
+docker pull dfam-tetools-latest
+ls
+mkdir TETools
+ls
+git
+ls
+cd TETools/
+git
+git clone https://github.com/Dfam-consortium/TETools
+git pull
+ls
+cd TEtools
+ls
+Vim Dockerfile 
+ls
+docker run -it --rm dfam/tetools:latest
+docker help
+clear
+vim
+cd ..
+cd d
+ls
+cd Dhakad
+cd CYP_Gene_Project/
+ls
+Dhakad_et_al_2025_Data_Analysis/
+ls
+clear
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+cd 12_species_genomes/
+ls
+cd TETools/
+ls
+touch Run_Docker.sh
+ls
+vim Run_Docker.sh
+sh Run_Docker.sh
+curl -sSLO https://github.com/Dfam-consortium/TETools/raw/master/dfam-tetools.sh
+chmod +x dfam-tetools.sh
+./dfam-tetools.shcurl -sSLO https://github.com/Dfam-consortium/TETools/raw/master/dfam-tetools.sh
+chmod +x dfam-tetools.sh
+./dfam-tetools.sh
+ls
+vim dfam-tetools.sh
+sh dfam-tetools.sh 
+cd TETools/
+ls
+vim Dockerfile 
+ls
+code .
+ls
+cd ..
+docker run -it --rm dfam/tetools:latest
+docker images
+quit
+ls
+docker help
+docker run
+code .
+cd TETools/
+ls
+sh Run_Docker.sh
+docker images
+docker -images
+docker --version
+wsl --status
+cd ..
+ls
+docker --version
+which docker
+ls -l/usr/bin/docker
+ls --help
+ls -l/usr/bin/docker
+clear
+docker image
+docker info
+sudo apt remove docker docker-engine docker.io containerd runc
+ls
+cd ..
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+exit
+docker
+cd ..
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+cd 12_species_genomes/
+ls
+cd TETools/
+ls
+clear
+ls
+sh dfam-tetools.sh 
+sh Run_Docker.sh 
+docker version
+which docker
+sudo apt remove docker docker.io containerd runc
+cd ..
+ls
+cd d
+ls
+cd Cy
+cd CYP_Gene
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+cd 12_species_genomes/
+ls
+cd TETools/
+ls
+vim Run_Docker.sh 
+sh Run_Docker.sh 
+ls
+cd TETools/
+ls
+docker ==version
+docker
+ls
+cd ..
+ls
+vim Run_Docker.sh 
+bash Run_Docker.sh 
+docker run --help
+sudo rm -rf /var/lib/docker
+exit
+ls
+bash Run_Docker.sh 
+docker run --help
+service docker stop
+ls ~
+ls ~ -a
+clear
+ls
+bash Run_Docker.sh 
+cd /mnt/d/
+ls
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+cd 12
+cd 12*
+cd 12_species_genomes/
+ls
+cd TETools/
+ls
+sudo rm -rf /var/lib/docker
+ls
+bash Run_Docker.sh 
+vim Run_Docker.sh 
+ls
+bash Run_Docker.sh 
+ls
+cd ..
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+clear
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+clear
+ls
+cd 12_species_genomes/
+ls
+cd 
+TETools
+cd TEtools
+exit
+ls
+clear
+cd TETools/
+ls
+vim Run_Docker.sh
+bash Run_Docker.sh 
+docker run -it --rm -v "$(pwd):/12_species_genomes" -w /12_species_genomes dfam/tetools:latest bash
+bash Run_Docker.sh 
+cd ..
+cd 12
+cd 12_species_genomes/
+ls
+touch spinContainer.sh
+ls
+vim spinContainer.sh 
+bash spinContainer.sh 
+vim spinContainer.sh 
+ls
+cd 12_species_genomes/
+ls
+vim spinContainer.sh 
+cd ..
+cd d
+cd CYP_Gene_Project/
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+clear
+cd 12_species_genomes/
+ls
+cd TETools
+ls
+vim Run_Docker.sh 
+bash Run_Docker.sh
+docker --version
+docker images
+vim Run_Docker.sh 
+bash Run_Docker.sh
+docker images
+ls
+vim Run_Docker.sh 
+bash Run_Docker.sh 
+ls
+bash dfam-tetools.sh 
+ls
+cd ..
+ls
+clear
+ls
+cd ..
+ls
+cd TETools/
+ls
+vim 
+ls
+vim Run_Docker.sh 
+bash Run_Docker.sh 
+ls
+cd ..
+ls
+cd 12_species_genomes/
+ls
+cd ..
+ls
+cd TETools/
+ls
+vim Run_Docker.sh 
+bash Run_Docker.sh 
+cd ..
+ls
+cd 12_species_genomes/
+ls
+cd ..
+ls
+cd TETools/
+ls
+clear
+ls
+vim Run_Docker.sh 
+ls c/users
+ls
+bash Run_Docker.sh 
+cd ..
+code .
+ls
+cd 12
+cd 12_species_genomes/
+ls
+vim spinContainer.sh 
+bash spinContainer.sh 
+ls
+clear
+ls
+code .
+bash spinContainer.sh 
+sudo apt-get clean
+ls
+storage
+df -H
+cd ..
+ls
+cd ..
+ls
+df- H
+df -H
+cd c
+ls
+cd mnt
+ls
+cd c
+df -H
+ls
+cd $Recycle.Bin'
+cd ..
+cd '$Recycle.Bin'
+ls
+-H
+sudo
+sudo -u
+sudo -h
+sudo -A
+clear
+du
+du -h | sort -hr | head -n 10
+du -h --max-depth=1 |sort -hr | head -n 10
+sudo -i
+exit
+sudo -i
+sudo apt-get clean
+ls
+cd ..
+ls
+cd root
+ls
+clear
+ls
+sudo apt -get clean
+cd bin
+ls
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+cd 12_species_genomes
+history
+cd ..
+cd d
+ls
+cd Cyp
+cd CYP_Gene_Project/
+ls
+clear
+ls
+cd Dhakad_et_al_2025_Data_Analysis/
+ls
+cd 12_species_genomes/
+clear
+ls
+bash spinContainer.sh
+touch runMasker.sh
+vim runMasker.sh 
+ls
+vim runMasker.sh 
+bash spinContainer.sh
+vim runMasker.sh 
+ls
+cd RM_17.SunFeb150221142026/
+ls
+cd ..
+cd RM_17.SunFeb150221142026/
+cd ..
+vim runMasker.sh 
+clear
+ls
+bash spinContainer.sh
+ls
+cd RMasker_output/
+ls
+cd ..
+cd RM_17
+ls
+cd RM_17.SunFeb150221142026/
+ls
+cd RM_29716.SunFeb151451382026/
+ls
+cd ..
+ls
+clear
+ls
+rm -rf RM_29716.SunFeb151451382026/
+ls
+cd ..
+ls
+rm -rf RMasker_output/
+vim runMasker.sh 
+ls
+vim runMasker.sh 
+bash spinContainer.sh 
+ls
+cd RMasker_output/
+ls
+ls -a
+cd ..
+rm -rf 
+clea
+ls
+rm -rf RMasker_output/
+ls
+clear
+ls
+cd RM_10.WedFeb181924212026/
+ls
+cd ..
+cd RM_17.SunFeb150221142026/
+ls
+cd ..
+ls
+vim runMasker.sh 
+bash spinContainer.sh 
+ls
+clear
+ls
+RM_17.SunFeb150221142026/
+ls RM_17.SunFeb150221142026/
+vim runMasker.sh 
+bash runMasker.sh 
+bash spinContainer.sh 
+ls
+vim runMasker.sh 
+bash spinContainer.sh 
+mkdir
+mkdir 2_Dmel_Out
+2_Dmel_Out
+ls
+clear
+ls
+cd 2_Dmel_Out/
+ls
+cd Dmel_Sta
+cd Dmel_Standard
+cd ,,
+cd ..
+ls
+cd Dmel_Standard/
+ls
+cd ncbi_dataset/
+ls
+cd data/
+ls
+cd GCA_002050065.1/
+ls
+cp GCA_002050065.1_CA_8.1_PBcR_genomic.fna ..
+ls
+cd ..
+ls
+cd ..
+ls
+bash spinContainer.sh 
+sudo apt clean
+ls
+sudo du
+sudo du -h --maxdepth=1 / | sort -hr
+sudo du -h  | sort -hr
+sudo du -sh var/lib/docker
+ls
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+cd 12_species_genomes
+ls
+cd Dhakad_et_al_2025_Data_Analysis
+ls
+cd 12_species_genomes
+ls
+cd Dmel_Standard
+ls
+cd 02-28
+cd 02_28
+ls
+cd ..
+ls
+cd ..
+ls
+cd 12_species_genomes/
+ls
+bash spinContainer.sh
+cd ..
+cd mnt
+cd d
+cd Cyp_Gene_Project
+ls
+cd Dhakad_et_al_2025_Data_Analysis
+ls
+cd 12_species_genome
+cd 12_species_genomes
+ls
+python Filter_startandstops.py
+cd ..
+cd d
+cd Cyp_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis
+cd 12_species_genomes
+ls
+bash spinContainer.sh
+cd ..
+cd d
+cd CYP_Gene_Project
+cd Dhakad_et_al_2025_Data_Analysis/
+cd 12_species_genomes/
+python inprogress.py
+python MakeCounts.py
+ls
+python Make_Counts.py
+cd ..
+ls
+cd RepeatMasker_Res
+cd RepeatMasker_Results/
+ls
+python Make_Counts.py
+python rewrite.py
+ls
+python Make_Counts_3_25.py
+ls
+cd..
+cd ..
+ls
+cd genomics/
+ls
+ls
+cd test_file_Duy/
+ls
+cd ..
+ls
+cd ..
+cd .
+ls
+cd user
+cd usr
+ls
+cd ..
+mnt
+cd mnt
+ls
+cd d
+ls
+clear
+ls -l
+cd CYP_Gene_Project/
+ls
+cd Spring26/
+ls
+cd DuySpring26/
+ls
+cd BioAtallah/
+ls
+cd BioAtallah/
+ls
+clear
+ls -l
+cd ..
+ld
+ls
+cd ..
+ls
+cd ..
+ls
+cd Spring26RepeatModeler/
+ls
+bash spinContainer.sh 
+vim spinContainer.sh 
+ls
+bash spinContainer.sh 
+mkdir RepeatModelorStuff
+ls
+bash spinContainer.sh 
+ls
+vim spinContainer.sh 
+bash spinContainer.sh 
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+cd Spring26RepeatModeler/
+ls
+cd ..
+ls
+cd ..
+ls
+cd mnt
+ls
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd Spring26/
+ls
+cd Spring26RepeatModeler/
+ls
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+ls
+cd RM_507616.WedJun31606312026/
+ls
+cd ..
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+ls
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+ls
+cd ,,
+cd ..
+ls
+cd mnt
+ls
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd Spring26/
+ls
+cd Spring26RepeatModeler/
+ls
+cd ..
+ls
+cd Spring26RepeatModeler/
+ls
+cd RepeatModelorStuff/
+ls
+cd ..
+ls
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+ls
+cd
+cd OrthoFinder
+ls
+cd 10_20_all)cyps_3_species
+cd 10_20_all_cyps_3_species
+cd ..
+ls
+cd ..
+ls
+cd ..
+ls
+cd mnt 
+ls
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd Spring26
+ls
+Spring26RepeatModeler
+cd Spring26RepeatModeler/
+ls
+cd ..
+ls
+cd Spring26RepeatModeler/
+ls
+cd Old/
+ls
+cd ..
+ls
+cd RepeatModelorStuff/
+ls
+cd 'Spring26RepeatModeler -Shortcut.lnk'
+cd ..
+ls
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+ls
+exit
+ls
+cd ..
+cd mnt
+cd d
+ls
+ls 
+.
+CYP_Gene_Project
+cd CYP_Gene_Project
+ls
+LS
+cd Spring26
+cd Spring26RepeatModeler
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+ls
+cd ..
+ls
+.cd 
+cd ..
+ls
+cd mnt
+ls
+cd d
+cd CYP_Gene_Project/
+cd Spring26/
+cd Spring26RepeatModeler/
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+ls
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+ls
+cd ..
+ls
+cd genomics/
+ls
+cd ..
+ls
+cd mnt
+cd d
+ls
+cd CYP_Gene_Project/
+cd Summer26/
+ls
+mkdir Transposon_annotation_tools
+cd Transposon_annotation_tools/
+conda create -y --name transposon_annotation_tools_env python=2.7
+conda activate transposon_annotation_tools_env
+conda install -y mamba
+mamba install -y -c bioconda genometools-genometools # for some users: mamba install -y -c bioconda -c conda-forge genometools-genometools
+mamba install -y -c derkevinriehl transposon_annotation_tools_proteinncbicdd1000
+conda install -y -c derkevinriehl transposon_annotation_tools_transposonpsicli # this one seems to not work with mamba
+mamba install -y -c derkevinriehl transposon_annotation_tools_mitetracker
+mamba install -y -c derkevinriehl transposon_annotation_tools_helitronscanner
+mamba install -y -c derkevinriehl transposon_annotation_tools_mitefinderii
+mamba install -y -c derkevinriehl transposon_annotation_tools_mustv2
+mamba install -y -c derkevinriehl transposon_annotation_tools_sinefinder
+# how to install sinescan
+mamba install -y python=2.7 # if not done before of mentioned while creating the environment
+mamba install -y -c derkevinriehl transposon_annotation_tools_sinescan=1.1.2
+conda deactivate
+mustv2 -help
+mkdir temp
+mustv2 demo.fasta result.txt temp
+ls
+conda activate transposon_annotation_tools_env
+mustv2 -help
+mkdir temp
+mustv2 demo.fasta result.txt temp
+cd ..
+ls
+cd MUST.r2-4-002.Release.tar/
+tar -xvzf MUST.r2-4-002.Release.tar
+cd ..
+ls
+tar -xvzf MUST.r2-4-002.Release.tar.gz
+conda activate transposon_annotation_tools_env
+ls
+cd Transposon_annotation_tools/
+ls
+cd ..
+ls
+mustv2 -help
+mkdir temp
+mustv2 demo.fasta result.txt temp
+conda create -y --name transposon_annotation_tools_env python=2.7
+conda activate transposon_annotation_tools_env
+conda install -y mamba
+mamba install -y -c bioconda genometools-genometools # for some users: mamba install -y -c bioconda -c conda-forge genometools-genometools
+mamba install -y -c derkevinriehl transposon_annotation_tools_proteinncbicdd1000
+conda install -y -c derkevinriehl transposon_annotation_tools_transposonpsicli # this one seems to not work with mamba
+mamba install -y -c derkevinriehl transposon_annotation_tools_mitetracker
+mamba install -y -c derkevinriehl transposon_annotation_tools_helitronscanner
+mamba install -y -c derkevinriehl transposon_annotation_tools_mitefinderii
+mamba install -y -c derkevinriehl transposon_annotation_tools_mustv2
+mamba install -y -c derkevinriehl transposon_annotation_tools_sinefinder
+# how to install sinescan
+mamba install -y python=2.7 # if not done before of mentioned while creating the environment
+mamba install -y -c derkevinriehl transposon_annotation_tools_sinescan=1.1.2
+python --version
+conda --version
+mamba --version
+pip show tqdm
+python --version
+conda --version
+mamba --version
+exit
+ls
+cd ..
+ls
+cd ..
+ls
+cd mnt
+cd d
+cd CYP_Gene_Project/
+cd Summer26/
+ls
+conda env remove -n transposon_annotation_tools_env
+ls
+conda create -y --name transposon_annotation_tools_env python=2.7
+conda activate transposon_annotation_tools_env
+conda install -y -c bioconda genometools-genometools # for some users: conda install -y -c bioconda -c conda-forge genometools-genometools
+conda install -y -c derkevinriehl transposon_annotation_tools_proteinncbicdd1000
+conda install -y -c derkevinriehl transposon_annotation_tools_transposonpsicli
+conda install -y -c derkevinriehl transposon_annotation_tools_mitetracker
+conda install -y -c derkevinriehl transposon_annotation_tools_helitronscanner
+conda install -y -c derkevinriehl transposon_annotation_tools_mitefinderii
+conda install -y -c derkevinriehl transposon_annotation_tools_mustv2
+conda install -y -c derkevinriehl transposon_annotation_tools_sinefinder
+# how to install sinescan
+conda install -y python=2.7 # if not done before of mentioned while creating the environment
+conda install -y -c derkevinriehl transposon_annotation_tools_sinescan=1.1.2
+ls
+conda install -y -c derkevinriehl transposon_annotation_tools_sinescan=1.1.2
+deactivate conda
+conda deactivate
+ls
+cd ..
+ls
+cd RepeatModeler/
+ls
+cd ..
+Spring26/
+ls
+cd Spring26/
+ls
+cd Spring26RepeatModeler/
+ls
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+ls
+cd ..
+ls
+cd mnt
+cd d
+cd CYP_Gene_Project/
+cd Spring26/
+ls
+cd Spring26RepeatModeler/
+ls
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+ls
+cd ..
+cd mnt
+cd d 
+ls
+cd CYP_Gene_Project/
+cd Spring26/
+cd Spring26RepeatModeler/
+docker run -it --rm   -v /c/Users/User/Documents/BioAtallah/RepeatMasker:/FASTA_Files   -w /FASTA_Files   dfam/tetools:latest bash
+docker run -it --rm   -v /c/Users/User/Documents/BioAtallah/RepeatMasker:/FASTA_Files   -w /FASTA_Files   dfam/tetools:latest bash
+docker run -it --rm \ -v $(pwd) :/Spring26RepeatModeler\ -w /Spring26RepeatModeler \ dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/Spring26RepeatModeler-w /Spring26RepeatModeler dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/Spring26RepeatModeler-w /Spring26RepeatModeler dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/Spring26RepeatModeler-w /Spring26RepeatModeler dfam/tetools:latest bash
+docker run -it --rm   -v /c/Users/User/Documents/BioAtallah/RepeatMasker:/FASTA_Files   -w /FASTA_Files   dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/spring26RepeatModeler-w /Spring26RepeatModeler dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/Spring26RepeatModeler-w /spring26repeatmodeler dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/spring26repeatmodeler-w /Spring26RepeatModeler dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/spring26repeatmodeler-w / Spring26RepeatModeler dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/spring26repeatmodeler -w / Spring26RepeatModeler dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/spring26repeatmodeler -w / spring26repeatmodeler dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/spring26repeatmodeler -w / spring26RepeatModeler dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/Spring26RepeatModeler -w / spring26repeatmodeler dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/Spring26RepeatModeler -w / Spring26repeatmodeler dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/Spring26RepeatModeler -w / spring26repeatmodeler dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/Spring26RepeatModeler -w / spring26repeatmodeler/ dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/Spring26RepeatModeler -w / spring26repeatmodeler / dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/Spring26RepeatModeler -w / spring26repeatmodeler \ dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/spring26repeatmodeler -w / spring26repeatmodeler \ dfam/tetools:latest bash
+docker run -it --rm   -v /d/Cyp_Gene_Project/Spring26/spring26repeatmodeler   -w /spring26repeatmodeler   dfam/tetools:latest bash
+ls
+cd ..
+ls
+cd spring26repeatmodeler/
+ls
+docker run -it --rm   -v /d/Cyp_Gene_Project/Spring26/spring26repeatmodeler   -w /spring26repeatmodeler   dfam/tetools:latest bash
+ls
+docker run -it --rm   -v D:/CYP_Gene_Project/Spring26/spring26repeatmodeler   -w /spring26repeatmodeler   dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/Spring26RepeatModeler-w /Spring26RepeatModeler dfam/tetools:latest bash
+docker run -it --rm -v $(pwd):/Spring26RepeatModeler-w /Spring26RepeatModeler dfam/tetools:latest bash
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+ls
+cd ..
+ls
+cd ..
+ls
+cd ,mt
+cd mnt
+cd d
+cd CYP_Gene_Project/
+cd Spring26/
+cd spring26repeatmodeler/
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+cd ..
+cd mnt d
+cd mnt
+cd d
+cd CYP_Gene_Project/
+cd Spring26/
+cd spring26repeatmodeler/
+docker run -it --rm     -v $(pwd):/Spring26RepeatModeler    -w /Spring26RepeatModeler     dfam/tetools:latest bash
+ls
+cd /mnt/g/Cyp_Gene_Project/spring26repeatmodeler
+ls
+cd /mnt/g
+ls
+cd /mnt/g/genomes
+ls
+cd affinis
+ls
+cd genomes
+ls *affinis*
+BuildDatabase -name D_affinis Drosophila_affinis.nanopore.rm.fna 
+which BuildDatabase
+cd ~
+ls
+find /mnt/g -name "spinContainer.sh"
+cd /mnt/g/CYP_Gene_Project/Spring26/Spring26RepeatModeler
+find /mnt/g -iname "*RepeatModeler*
+ls
+~/CYP_Gene_Project/RepeatModeler
+~ /CYP_Gene_Project/RepeatModeler
+cd ~
+ls
+cd CYP_Gene_Project
+cd ..
+ls
+cd mnt
+cd d
+ls
+cd ..
+cd mnt
+cd d
+cd CYP_Gene_Project
+ls
+cd RepeatModeler
+ls
+cd RepeatMasker
+ls
+cd ..
+ls
+cd RepeatMasker
+ls
+cd RepeatMasker
+ls
+cd ..
+ls
+cd RepeatModeler
+BuildDatabase -name D_affinis Species_Drosophila_affinis.nanopore.rm.fna
+ls
+find . iname "*RepeatModeler*"
+ls
+cd RepeatMakser
+ls
+find . -name BuildDatabase
+ls
+find /mnt/d/CYP_Gene_Project -name spinContainer.sh
+ls
+cd /mnt/d/CYP_Gene_Project/Spring26/spring26repeatmodeler
+ls'
+ls
+BuildDatabase -name D_affinis Drosophila_affinis.nanopore.rm.fna 
+ls
+/mnt/d/CYP_Gene_Project/Spring26/spring26repeatmodeler
+spinContainer.sh
+bash ./spinContainer.sh
+ls
+cd ..
+ls
+cd ..
+cd mnt
+cd d
+cd CYP_Gene_Project
+ls
+cd Spring26
+ls
+cd spring26repeatmodeler
+ls
+RepeatMasker -lib RM_15.MonJul132012242026/consensi.fa.classified -pa 8 Drosophila_affinis.nanopore.rm.fna 
+cat runMasker.sh
+bash runMasker.sh
+./runMasker.sh
+cat runMasker.sh
+ls
+which RepeatMasker
+bash ./spinContainer.sh
+ls
+cd
+cd ..
+ls
+cd mnt
+cd ..
+ls
+cd mnt
+cd d
+cd CYP_Gene_Project
+ls
+cd RepeatModeler
+ls
+BuildDatabase -name D_sproati Drosophila_sproati.GCA_018904355.1.
+ls
+bash spinContainer.sh
+./spinContainer.sh
+. /spinContainer.sh
+find /mnt/d/CYP_Gene_Project -name 
+ls
+cd RepeatMasker
+ls
+/mnt/d/CYP_Gene_Project -name "spinContainer.sh"
+ls
+cd /mnt/d/CYP_Gene_Project
+find . -name "spincontainer.sh"
+ls
+cd Spring26
+ls
+cd spring26repeatmodeler
+ls
+BuildDatabase -name D_sproati Drosophila_sproati.GCA_018904355.1.rm.fna 
+ls
+bash spinContainer.sh
+ps aux
+htop
+sudo apt install htop
+find / -name Dockerfile
+sudo find / -name Dockerfile
+whoami
+passwd 
+sudo su
+clear
+ll
+find / -name Dockerfile
+find / -name Dockerfile 2> /dev/null
+ll
+find / -name spincontainer.sh
+find / -name spinContainer.sh 2> /dev/null
+cd /mnt
+cd d
+ll
+cd CYP_Gene_Project/
+cd spring26
+ll
+cd spring26repeatmodeler/
+ll
+cat spinContainer.sh 
+cat runMasker.sh 
+ls
+cd ..
+ls
+cd mnt
+cd d
+cd CYP_Gene_Project
+ls
+cd RepeatModeler
+ls
+cd ..
+cd spring26
+cd spring26repeatmodeler/
+ls
+BuildDatabase -name D_atripex Drosophila_atripex.nanopore.rm.fna 
+bash spinContainer.sh
+cd ..
+cd d
+cd /
+ls
+cd media
+ls
+cd ..
+cd mnt
+ls
+cd d
+ls
+cd CYP_Gene_Project/
+ls
+cd Springt26
+cd Spring26
+ls
+cd spring26repeatmodeler
+bash spincontainer.sh
+cat spinContainer.sh 
+ll
+find / -name masker 2> /dev/null
+cd ..]
+cd ..
+cd d
+cd mnt
+cd d
+ls
+cd Spring26
+cd CYP_Gene_Project
+cd Spring26
+cd spring26repeatmodeler
+bash spinContainer.sh
+cd ..
+cd mnt
+cd d
+cd CYP_Gene_Project
+cd Spring26\
+cd Spring26
+cd spring26repeatmodeler
+bash spinContainer.sh 
+find / -iname "*Drosophila*"
+find / -iname "*Drosophila*" 2> /dev/null
+ll
+tree -L 2
+sudo apt install tre
+sudo apt install tree
+ll
+cat .sudo_as_admin_successful 
+ll
+find . -iname '*.out'
+find . -iname '*.rm.out'
+ll
+find / -iname '*.out'
+find / -iname '*.out' 2>/dev/null
+find / -iname '*PAULISTORUM*' 2>/dev/null
+ll
+cd /
+pwd
+find / -type d -iname '*Spring26RepeatModeler*' 2>/dev/null

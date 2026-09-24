@@ -218,9 +218,16 @@ python3 build_tfbs_te_gff.py --te-file … --gff … --fasta … --output combin
 python3 compare_te_cyp_exposure.py --config te_cyp_species_config.ini
 ```
 
-Step 2 needs a gene annotation whose names are already *D. melanogaster* ortholog symbols.
-**No code in this repository produces one** — that step was never committed. Existing species
-have one; a new species would not.
+Step 2 needs a gene annotation whose names are already *D. melanogaster* ortholog symbols —
+the `change_<SPECIES>_final_final.gff` files. They are made by `to_organize/ReVamp_Final.py`
+(recovered, not yet committed; about 10 minutes per species):
+
+```bash
+# the original is an artifact — run a path-only copy, outside the repository (pandas 2.x)
+cd ~/dl-staging/test_run && python /path/to/ReVamp_copy.py
+```
+
+Inputs, path edits and known defects: [`deep/06-final-final-gff.md`](deep/06-final-final-gff.md).
 
 ---
 
@@ -231,3 +238,4 @@ have one; a new species would not.
 - **File formats** — [`pipeline/detailed/03-data-contracts.md`](pipeline/detailed/03-data-contracts.md)
 - **Known defects — read before quoting any number** — [`pipeline/detailed/04-gaps-and-provenance.md`](pipeline/detailed/04-gaps-and-provenance.md)
 - **The scripts line by line** — [`deep/`](deep/)
+- **Making the `final_final` GFFs** — [`deep/06-final-final-gff.md`](deep/06-final-final-gff.md)

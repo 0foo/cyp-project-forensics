@@ -1,0 +1,6 @@
+Locus tag	Gene symbol	Gene description
+Dvir\GJ21722	LOC6625467	probable cytochrome P450 6a23
+Dmoj\GI21254	LOC6580984	cytochrome P450 CYP12A2
+Dvir\GJ21709	LOC6625748	probable cytochrome P450 4e1
+Dvir\GJ22648	LOC6630819	cytochrome P450 CYP12A2
+Dvir\GJ20586	LOC6624735	probable cytochrome P450 6a14

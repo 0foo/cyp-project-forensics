@@ -10,6 +10,7 @@ whether to use it. For that, start with [`docs/simple/`](../simple/).
 | [03-build-tfbs-te-gff.md](03-build-tfbs-te-gff.md) | `build_tfbs_te_gff.py` — all six stages, the FASTA indexer, the CncC motif, GFF3 emission |
 | [04-comparison-scripts.md](04-comparison-scripts.md) | the three `compare_te_cyp_*` scripts — parsing, filtering, the two restricted variants, report construction |
 | [05-statistics.md](05-statistics.md) | every test implemented, why it was chosen, how it is validated, and what the design cannot answer |
+| [06-final-final-gff.md](06-final-final-gff.md) | `ReVamp_Final.py` and its inputs — how `change_<SPECIES>_final_final.gff` is made, how to re-run it, and the check against the originals |
 
 Two further documents were once planned here and are deliberately **not** written, because
 they would duplicate pipeline-level material that already exists:

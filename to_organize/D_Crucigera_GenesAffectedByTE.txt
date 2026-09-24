@@ -1,0 +1,72 @@
+contig_27_1	Cyp313b1	   16   11.6  3.6  0.0  contig_27_1  14895865 14895892 (17360184) + (TA)n              Simple_repeat          1     29    (0) 34923  
+contig_27_1	Cyp313b1	   16   16.5  0.0  0.0  contig_27_1  14895997 14896023 (17360053) + (T)n               Simple_repeat          1     27    (0) 34924  
+contig_27_1	Cyp313b1	   12   20.5  5.1  0.0  contig_27_1  14896123 14896161 (17359915) + A-rich             Low_complexity         1     41    (0) 34925  
+contig_27_1	Cyp313b1	   17   15.6  0.0  0.0  contig_27_1  14896186 14896214 (17359862) + (AT)n              Simple_repeat          1     29    (0) 34926  
+contig_27_1	Cyp313b1	   18   17.5  0.0  0.0  contig_27_1  14896653 14896684 (17359392) + A-rich             Low_complexity         1     32    (0) 34927  
+contig_27_1	Cyp313b1	   20   28.9  0.0  3.9  contig_27_1  14896848 14896928 (17359148) + (TACATA)n          Simple_repeat          1     78    (0) 34928 *
+contig_27_1	Cyp313b1	   21   10.4  0.0  6.8  contig_27_1  14896896 14896942 (17359134) + (ATATAT)n          Simple_repeat          1     44    (0) 34929  
+contig_27_1	Cyp313b1	   16   21.3  0.0  0.0  contig_27_1  14897003 14897035 (17359041) + A-rich             Low_complexity         1     33    (0) 34930  
+contig_27_1	Cyp313b1	   28   14.6  0.0  0.0  contig_27_1  14897137 14897182 (17358894) + (A)n               Simple_repeat          1     46    (0) 34931  
+contig_27_1	Cyp313b1	   23    8.3  0.0  2.6  contig_27_1  14897432 14897471 (17358605) + (CAACT)n           Simple_repeat          1     39    (0) 34932  
+contig_27_1	Cyp313b1	   12   31.3  1.4  4.3  contig_27_1  14897996 14898067 (17358009) + (ATTTT)n           Simple_repeat          1     70    (0) 34933  
+contig_27_1	Cyp313b1	   14   21.8  0.0  0.0  contig_27_1  14899238 14899274 (17356802) + (ATATGAT)n         Simple_repeat          1     37    (0) 34934  
+contig_27_1	Cyp313b1	   38    8.0  0.0  1.9  contig_27_1  14900327 14900381 (17355695) + (CT)n              Simple_repeat          1     54    (0) 34935  
+contig_27_1	Cyp313b1	   16   13.0  6.8  2.2  contig_27_1  14900530 14900573 (17355503) + (GGCA)n            Simple_repeat          1     46    (0) 34936  
+contig_27_1	Cyp313b1	   21   15.9  0.0  0.0  contig_27_1  14900610 14900651 (17355425) + (GTTTC)n           Simple_repeat          1     42    (0) 34937  
+contig_27_1	Cyp313b1	  229   15.1  9.6  0.0  contig_27_1  14900950 14900980 (17355096) + rnd-2_family-475   LINE/R1             1243   1321  (225) 34938  
+contig_27_1	Cyp313b1	  237    4.9  2.4  0.0  contig_27_1  14900981 14901021 (17355055) C rnd-2_family-74    Unknown             (83)    366    325 34939  
+contig_27_1	Cyp313b1	   24   20.1  0.0  0.0  contig_27_1  14901023 14901073 (17355003) + (AAC)n             Simple_repeat          1     51    (0) 34940  
+contig_27_1	Cyp313b1	   15   13.9  0.0  0.0  contig_27_1  14902740 14902779 (17353297) + (AT)n              Simple_repeat          1     40    (0) 34941  
+contig_27_1	Cyp313b1	   26    0.0  0.0  0.0  contig_27_1  14903969 14903993 (17352083) + (GGATGG)n          Simple_repeat          1     25    (0) 34942  
+contig_27_1	Cyp313b1	  335   17.3  1.3  0.0  contig_27_1  14904714 14904788 (17351288) C rnd-4_family-435   Unknown             (18)    291    216 34943  
+contig_27_1	Cyp313b1	   21   18.6  6.6  0.0  contig_27_1  14904844 14904904 (17351172) + (TAT)n             Simple_repeat          1     65    (0) 34944  
+contig_27_1	Cyp313b1	   15   22.7  1.8  3.7  contig_27_1  14905149 14905203 (17350873) + (ATTAA)n           Simple_repeat          1     54    (0) 34945  
+contig_27_1	Cyp6d4	 1026   18.1  0.9  2.9  contig_27_1  22330873 22331083  (9924993) + rnd-3_family-7     Unknown                1    207    (0) 48115  
+contig_27_1	Cyp6d4	   14   17.1  0.0  7.1  contig_27_1  22331162 22331217  (9924859) + (TTTAAC)n          Simple_repeat          1     52    (0) 48116  
+contig_27_1	Cyp6d4	   12    4.1  3.5  7.1  contig_27_1  22332474 22332502  (9923574) + (ATTGA)n           Simple_repeat          1     28    (0) 48117  
+contig_27_1	Cyp6d4	  507   15.5  4.1  1.0  contig_27_1  22332561 22332658  (9923418) + rnd-3_family-7     Unknown               65    165   (42) 48118  
+contig_27_1	Cyp6d4	  560   12.8  6.4  0.9  contig_27_1  22335499 22335608  (9920468) + rnd-3_family-7     Unknown               65    180   (27) 48119  
+contig_28_1	Cyp303a1	   12   29.8  0.0  2.0  contig_28_1  7623711 7623761   (91818) + (CAACAG)n          Simple_repeat          1     50    (0) 81153  
+contig_28_1	Cyp303a1	   32    3.2  0.0  0.0  contig_28_1  7624987 7625018   (90561) + (AT)n              Simple_repeat          1     32    (0) 81154  
+contig_28_1	Cyp303a1	   27   26.6  1.9  3.9  contig_28_1  7625568 7625671   (89908) + (TACA)n            Simple_repeat          1    102    (0) 81155  
+contig_28_1	Cyp303a1	   21   22.4  1.0  1.0  contig_28_1  7626290 7626340   (89239) + A-rich             Low_complexity         1     51    (0) 81156  
+contig_28_1	Cyp303a1	   14   24.3  2.0  2.0  contig_28_1  7626333 7626382   (89197) + (AATTAT)n          Simple_repeat          1     50    (0) 81157 *
+contig_28_1	Cyp303a1	  329   22.1 11.4  3.9  contig_28_1  7628340 7628589   (86990) C rnd-2_family-81    Unknown             (17)    348     36 81158  
+contig_28_1	Cyp303a1	   26   20.9  4.5  0.0  contig_28_1  7631006 7631071   (84508) + (AT)n              Simple_repeat          1     69    (0) 81159  
+contig_28_1	Cyp303a1	   13   12.8  5.9  0.0  contig_28_1  7631155 7631188   (84391) + (GTATATA)n         Simple_repeat          1     36    (0) 81160  
+contig_53_1	Cyp4d8	  488   24.1  0.9  0.0  contig_53_1  13562850 13562965 (10902007) + rnd-2_family-90    Unknown                1    117  (314) 200869  
+contig_53_1	Cyp4d8	  347   16.7  0.0  0.0  contig_53_1  13563105 13563170 (10901802) + rnd-3_family-27    Unknown               97    162   (15) 200870  
+contig_53_1	Cyp4d8	   15   13.9  0.0  0.0  contig_53_1  13563427 13563450 (10901522) + (T)n               Simple_repeat          1     24    (0) 200871  
+contig_53_1	Cyp4d8	   34    0.0  0.0  0.0  contig_53_1  13565955 13565983 (10898989) + (CT)n              Simple_repeat          1     29    (0) 200872  
+contig_53_1	Cyp4d8	   37    0.0  0.0  2.9  contig_53_1  13569149 13569184 (10895788) + (TG)n              Simple_repeat          1     35    (0) 200873  
+contig_54_1	Cyp6g1	   17   16.4  2.9  0.0  contig_54_1   3330358  3330391 (19893090) + (TA)n              Simple_repeat          1     35    (0) 230612  
+contig_54_1	Cyp6g1	   16   14.9  2.4  5.2  contig_54_1   3334537  3334584 (19888897) + A-rich             Low_complexity         1     46    (0) 230613  
+contig_54_1	Cyp6g1	   13   10.8  0.0  9.1  contig_54_1   3334929  3334964 (19888517) + (TATTTA)n          Simple_repeat          1     33    (0) 230614  
+contig_54_1	Cyp6g1	  263   21.1  0.0  0.0  contig_54_1   3335114  3335165 (19888316) C rnd-3_family-469   Unknown            (179)    259    208 230615  
+contig_54_1	Cyp6g1	  241   19.1  0.0  0.0  contig_54_1   3335140  3335181 (19888300) + rnd-1_family-7     LINE/L1               12     53  (450) 230616 *
+contig_54_1	Cyp6g1	   17   14.3  6.2  2.0  contig_54_1   3335246  3335263 (19888218) + (TATTTT)n          Simple_repeat          1     53    (0) 230617  
+contig_54_1	Cyp6g1	   19   17.0  0.0  0.0  contig_54_1   3335264  3335296 (19888185) + (T)n               Simple_repeat          1     33    (0) 230618  
+contig_54_1	Cyp4p1	 3481    5.5  0.2  2.7  contig_54_1  19364066 19364565  (3858916) + ltr-1_family-16    LTR/Copia           2506   2993    (0) 263887  
+contig_54_1	Cyp4p1	  974    4.7  6.0  0.6  contig_54_1  19364566 19364716  (3858765) + ltr-1_family-15    LTR/Unknown            1    159   (87) 263888 *
+contig_54_1	Cyp4p1	 2822    4.3  0.0  0.0  contig_54_1  19364716 19365067  (3858414) C rnd-1_family-42    Unknown              (0)    607    256 263889  
+contig_54_1	Cyp4p1	 1662   13.4 13.3  9.5  contig_54_1  19365067 19365593  (3857888) C rnd-4_family-3699  LTR/Gypsy          (573)   6363   5819 263890 *
+contig_54_1	Cyp4p1	 1239   10.1  7.5  4.3  contig_54_1  19365590 19365816  (3857665) C rnd-4_family-3699  LTR/Gypsy         (1396)   5540   5307 263890 *
+contig_54_1	Cyp4p1	  449    3.2  0.0  1.6  contig_54_1  19365811 19365873  (3857608) + ltr-1_family-15    LTR/Unknown          152    213   (33) 263891 *
+contig_54_1	Cyp4p1	   30   21.2  0.0  0.0  contig_54_1  19369548 19369612  (3853869) + (CAT)n             Simple_repeat          1     65    (0) 263892  
+contig_54_1	Cyp4p1	   25   17.0  4.9  1.6  contig_54_1  19371115 19371175  (3852306) + (GT)n              Simple_repeat          1     63    (0) 263893  
+contig_54_1	Cyp4p1	 3481    5.5  0.2  2.7  contig_54_1  19364066 19364565  (3858916) + ltr-1_family-16    LTR/Copia           2506   2993    (0) 263887  
+contig_54_1	Cyp4p1	  974    4.7  6.0  0.6  contig_54_1  19364566 19364716  (3858765) + ltr-1_family-15    LTR/Unknown            1    159   (87) 263888 *
+contig_54_1	Cyp4p1	 2822    4.3  0.0  0.0  contig_54_1  19364716 19365067  (3858414) C rnd-1_family-42    Unknown              (0)    607    256 263889  
+contig_54_1	Cyp4p1	 1662   13.4 13.3  9.5  contig_54_1  19365067 19365593  (3857888) C rnd-4_family-3699  LTR/Gypsy          (573)   6363   5819 263890 *
+contig_54_1	Cyp4p1	 1239   10.1  7.5  4.3  contig_54_1  19365590 19365816  (3857665) C rnd-4_family-3699  LTR/Gypsy         (1396)   5540   5307 263890 *
+contig_54_1	Cyp4p1	  449    3.2  0.0  1.6  contig_54_1  19365811 19365873  (3857608) + ltr-1_family-15    LTR/Unknown          152    213   (33) 263891 *
+contig_54_1	Cyp4p1	   30   21.2  0.0  0.0  contig_54_1  19369548 19369612  (3853869) + (CAT)n             Simple_repeat          1     65    (0) 263892  
+contig_54_1	Cyp4p1	   25   17.0  4.9  1.6  contig_54_1  19371115 19371175  (3852306) + (GT)n              Simple_repeat          1     63    (0) 263893  
+contig_54_1	Cyp4p1	 3481    5.5  0.2  2.7  contig_54_1  19364066 19364565  (3858916) + ltr-1_family-16    LTR/Copia           2506   2993    (0) 263887  
+contig_54_1	Cyp4p1	  974    4.7  6.0  0.6  contig_54_1  19364566 19364716  (3858765) + ltr-1_family-15    LTR/Unknown            1    159   (87) 263888 *
+contig_54_1	Cyp4p1	 2822    4.3  0.0  0.0  contig_54_1  19364716 19365067  (3858414) C rnd-1_family-42    Unknown              (0)    607    256 263889  
+contig_54_1	Cyp4p1	 1662   13.4 13.3  9.5  contig_54_1  19365067 19365593  (3857888) C rnd-4_family-3699  LTR/Gypsy          (573)   6363   5819 263890 *
+contig_54_1	Cyp4p1	 1239   10.1  7.5  4.3  contig_54_1  19365590 19365816  (3857665) C rnd-4_family-3699  LTR/Gypsy         (1396)   5540   5307 263890 *
+contig_54_1	Cyp4p1	  449    3.2  0.0  1.6  contig_54_1  19365811 19365873  (3857608) + ltr-1_family-15    LTR/Unknown          152    213   (33) 263891 *
+contig_54_1	Cyp4p1	   30   21.2  0.0  0.0  contig_54_1  19369548 19369612  (3853869) + (CAT)n             Simple_repeat          1     65    (0) 263892  
+contig_54_1	Cyp4p1	   25   17.0  4.9  1.6  contig_54_1  19371115 19371175  (3852306) + (GT)n              Simple_repeat          1     63    (0) 263893  

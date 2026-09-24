@@ -34,7 +34,9 @@ the corresponding *D. melanogaster* ortholog symbols, producing files named
 `*_withDmelNames.gff`. Without it, the same gene carries a different symbol in every species
 and nothing can be compared across species — and the Cyp target list would match nothing.
 
-**Two different scripts did this, by two different people, and neither is committed:**
+**Two different scripts did this, by two different people, and neither is committed** — both
+have since been recovered into `to_organize/`; `ReVamp_Final.py` is documented, and verified by
+re-running it, in [`deep/06-final-final-gff.md`](../../deep/06-final-final-gff.md):
 
 | Dataset | Script | Author | Location | Date |
 |---|---|---|---|---|
@@ -49,8 +51,9 @@ points at **Dataset #2**, so that is the one that was in active use as of August
 `Duy_New_Scripts` — it is a script folder, not a data folder, despite the name *(OCR doc 03b)*.
 
 **If you need to rebuild this step**, you need the ortholog mapping as well as the code. The
-committed example output shows what it produced: `dmel_orthologs=` and `hog=N1.HOG…`
-attributes on mRNA records, so the mapping came from a hierarchical orthogroup assignment.
+committed example output shows `dmel_orthologs=` and `hog=N1.HOG…` attributes on mRNA
+records. Those come from the published Zenodo annotations (record 18453526), not from this
+step; this step only swaps gene IDs for the Dmel symbol of the same HOG.
 
 ### 0c. The Cyp target list ✅
 
