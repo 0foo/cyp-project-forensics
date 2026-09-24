@@ -135,6 +135,11 @@ Of those 900 rows, here is what the repeats actually are:
 elements at all.** They are microsatellites and AT-rich stretches. RepeatMasker reports them
 because it is a repeat finder, not a TE finder.
 
+*D. ananassae* is not unusual in this. Across all 27 finished species tables the figure is
+**70.1%**, ranging from 36.9% in *D. suzukii* to 90.2% in *D. anomalata* — and because it
+varies that much between species, it shifts the comparison rather than just blurring it. See
+[`../../../evidence/reconstructed/repeat-class-analysis/`](../../../evidence/reconstructed/repeat-class-analysis/).
+
 Nothing in the pipeline filters them out. The repeat class is carried faithfully all the way
 into the combined GFF3 as a `repeat_class=` attribute, but neither the merge step nor any of
 the three comparison scripts ever looks at it. So "TE burden" as this pipeline currently

@@ -112,32 +112,103 @@ work items**: nothing in `evidence/` is edited. Where a "fix" is described, it i
 characterisation of the defect — this is the thing that is wrong — and a note for whoever
 rebuilds the pipeline elsewhere.
 
-### D1. Simple repeats are counted as transposable elements
+### D1. Most of what the pipeline calls a transposable element is not one
 
-RepeatMasker reports every repeat, not only TEs. Nothing in the pipeline filters on repeat
-class: stage 3b keeps every hit in the window, stage 4 records the class faithfully as
-`repeat_class=` and then never uses it, and none of the three comparison scripts mention it.
+RepeatMasker is a *repeat* finder, not a TE finder: it reports microsatellites, AT-rich
+stretches and satellite DNA alongside genuine transposons. **Nothing in the pipeline filters
+on repeat class.** `Locate_TE.py` keeps every hit in the window; `build_tfbs_te_gff.py` records
+the class faithfully as `repeat_class=` and never reads it again; none of the three comparison
+scripts mentions it. The class column is carried the whole length of the pipeline and consulted
+by nothing.
 
-Measured on the surviving *D. ananassae* result (900 rows):
+Measured across **all 27 non-empty finished tables — 21,409 rows**, not one species:
 
-| Class | Rows | Actually a TE? |
-|---|---|---|
-| `Simple_repeat` | 502 | no |
-| `Low_complexity` | 118 | no |
-| `Unknown` | 136 | unclassified |
-| `RC/Helentron`, `LTR/Gypsy`, `LINE/CR1`, `RC/Helitron`, `DNA/TcMar-Tc1`, other | 144 | yes |
+| Category | Rows | % of rows | % of base pairs | Median length |
+|---|---|---|---|---|
+| **Not a transposable element** | 15,018 | **70.1%** | 30.2% | 39 bp |
+| Unclassified (`Unknown`) | 2,790 | 13.0% | 34.1% | 126 bp |
+| Genuine transposable element | 3,601 | **16.8%** | 35.7% | 122 bp |
 
-**About 69% of what the pipeline calls "TE burden" is microsatellite and low-complexity
-sequence.** If simple-repeat density is uniform across species this adds noise; if it varies
-with genome assembly quality or GC content — which it does — it adds bias, and in a comparison
-between species groups that is exactly the wrong kind of error.
+**70.1% of the study's "TE burden" is definitively not a transposable element**, and only
+16.8% is a classified one. `Simple_repeat` alone — `(AAT)n`, `(CA)n`, median length 39 bp — is
+**61.8% of every row in the study**. No genuine TE class reaches 6% of the data.
+
+The `Unknown` bucket is reported separately on purpose: in a *de novo* RepeatModeler library
+many of those families are real TEs the classifier could not name. Counting them as TEs still
+leaves 70.1% junk; counting them as junk gives 83.2% not confirmed as transposons. **The
+honest range is 70–83%.**
+
+#### This is bias, not noise
+
+Earlier revisions of this document reasoned that uniform simple-repeat density would add noise
+rather than bias. Measured, it is not uniform:
+
+| | |
+|---|---|
+| Lowest junk fraction | *D. suzukii*, **36.9%** |
+| Highest | *D. anomalata*, **90.2%** |
+| Spread | **53.3 percentage points**, standard deviation 12.6 |
+
+A 53-point spread in the contaminant, in a comparison designed to detect a difference in the
+contaminated quantity.
+
+#### It changes which species look TE-rich
+
+Ranking the 27 species by hits per Cyp gene as the pipeline measures it, against ranking them
+by genuine transposable elements only:
+
+> **Spearman ρ = 0.597.** These are substantially different measurements.
+
+| Species | Rank as measured | Rank if filtered | Move |
+|---|---|---|---|
+| *D. mojavensis* | **1st** | 22nd | −21 |
+| *D. erecta* | 22nd | 11th | +11 |
+| ***D. suzukii*** | 12th | **1st** | **+11** |
+| *D. aldrichi* | 4th | 13th | −9 |
+
+The species the pipeline ranks first, *D. mojavensis*, is 22nd of 27 once junk is removed
+(80.3% of its hits are not transposons). The species with the most genuine TEs per Cyp gene is
+*D. suzukii* — which the pipeline ranks 12th, and which is the only species the archive ever
+names in an exposure context (`exposure = high`, in the config example at
+`compare_te_cyp_exposure 1 1.py:586-588`). The real config did not survive (G3), so nothing
+here is a result about exposure; but the named high-exposure exemplar is precisely the species
+whose real signal this metric suppresses.
+
+Junk also acts as a floor under every species, compressing the between-species spread from
+**10.1× to 4.4×** — less dynamic range, in a design already short of power.
+
+#### Effect on the statistics that were actually run
+
+Fisher's exact test runs on a presence/absence table: does this Cyp gene have at least one TE
+nearby?
+
+| | |
+|---|---|
+| Gene/species pairs with ≥1 recorded hit | **1,423** |
+| ... that still have one once non-TEs are removed | **683** |
+| Would flip to "no TE" | **740 — 52.0%** |
+
+**More than half the genes currently counted as "has a TE nearby" have no genuine transposable
+element nearby** — their entry rests entirely on microsatellite and low-complexity hits. (52.0%
+is the fraction of the *positive* entries that would flip; genes with no hits at all are not in
+these tables, but they are the side of the table the test is least sensitive to.) Every
+Fisher's exact result the pipeline reports is computed on a table that consulting the repeat
+class would restructure. Mann-Whitney is affected the same way: the per-gene counts it ranks
+are on average 70% microsatellite.
+
+Full per-species figures, method and caveats:
+[`../../../evidence/reconstructed/repeat-class-analysis/`](../../../evidence/reconstructed/repeat-class-analysis/).
 
 **What would have to change:** a filter on `repeat_class` (field 10 of the `.out` line). The
 natural place is stage 3b, though stage 4 already parses the class and could expose an
 exclusion option without disturbing the narrow-waist format. The point of recording it here is
-that **the lab's inclusion of simple repeats was silent — there is no evidence anywhere in the
-archive that it was a decision at all**, rather than something inherited from RepeatMasker's
+that **the lab's inclusion of simple repeats was silent** — there is no evidence anywhere in
+the archive that it was a decision at all, rather than something inherited from RepeatMasker's
 default output and never examined.
+
+> **D1 and D3 compound.** D3 discards long elements that reach past the window edge — 71% of
+> those ≥5 kb. D1 retains every 39 bp microsatellite that fits inside it. Together they select
+> *against* the long insertions the study is about and *for* the short repeats it is not.
 
 ### D2. Row duplication in `filtered.gff`
 

@@ -254,6 +254,29 @@ and that turned out to matter more than expected.
   discarded elements and the script that found it are in
   `evidence/reconstructed/window-rule-analysis/` — investigation output, not lab material.
 
+### 12. How much of the "TE burden" is not a transposon (2026-09-24, evening)
+
+Asked to document, alongside D3, the small useless repeats the pipeline captures and what
+fraction of them are not transposons. Measured across **all 27 non-empty finished tables**
+rather than the single species the docs had been quoting.
+
+- **70.1% of 21,409 rows are definitively not transposable elements.** `Simple_repeat` alone
+  is 61.8%, median length 39 bp. Only 16.8% is a classified transposon; 13.0% is `Unknown`,
+  kept as its own bucket because many of those are probably real. Honest range: 70–83%.
+- **It is bias, not noise** — the earlier docs had reasoned it might be uniform. It is not:
+  36.9% (*D. suzukii*) to 90.2% (*D. anomalata*), a 53-point spread, sd 12.6.
+- **Filtering junk reorders the species.** Spearman ρ = 0.597 between the pipeline's ranking
+  and a real-TE ranking. *D. mojavensis* falls from 1st to 22nd of 27; *D. suzukii* rises from
+  12th to 1st — and *D. suzukii* is the only species the archive names in an exposure context
+  (`exposure = high`, in a config example). The real config did not survive, so that is a
+  coincidence worth recording, not a result.
+- Junk acts as a floor, compressing the between-species spread from 10.1× to 4.4×.
+- **52% of the gene/species pairs counted as "has a TE nearby" have no genuine transposon
+  nearby.**
+- D1 rewritten in `docs/pipeline/detailed/04-gaps-and-provenance.md`, with a note that D1 and
+  D3 compound: D3 drops the long elements, D1 keeps the 39 bp microsatellites. Supporting data
+  and script in `evidence/reconstructed/repeat-class-analysis/`.
+
 ---
 
 ## Where things are now

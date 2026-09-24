@@ -177,7 +177,7 @@ quality, phylogenetic relatedness, genome size and annotation completeness all p
 TE counts, and none of them enter the analysis. With five species there is no realistic way to
 control for them — but "not controlled" is different from "not a problem".
 
-**The input measures the wrong thing, partly.** About 69% of what these tests count as TEs are
+**The input measures the wrong thing, mostly.** 70.1% of what these tests count as TEs are
 simple repeats and low-complexity regions, because nothing upstream filters on repeat class. If
 that fraction varies systematically between the groups, it is bias rather than noise. See
 [`../pipeline/detailed/04-gaps-and-provenance.md`](../pipeline/detailed/04-gaps-and-provenance.md).

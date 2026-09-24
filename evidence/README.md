@@ -214,10 +214,16 @@ ending mid-line — so it is not what the committed results were made from. `fil
 *is* consistent with the full file, and re-running the last two steps from it reproduces the
 committed outputs exactly.
 
-Every table here was produced under the containment window rule described in
-[`reconstructed/window-rule-analysis/`](reconstructed/window-rule-analysis/), which silently
-drops long elements near genes. Nothing in the tables records that, so the counts in them are
-lower bounds of a particular, undocumented kind.
+Two measured defects govern what is in these tables, and neither is recorded anywhere in them:
+
+- The containment window rule silently drops long elements near genes
+  ([`reconstructed/window-rule-analysis/`](reconstructed/window-rule-analysis/)).
+- **70.1% of the 21,409 rows across these tables are not transposable elements** — 61.8% is
+  `Simple_repeat` alone, median length 39 bp. Only 16.8% is a classified transposon
+  ([`reconstructed/repeat-class-analysis/`](reconstructed/repeat-class-analysis/)).
+
+So the counts here are lower bounds on real TEs and upper bounds on anything called "TE
+burden", in undocumented and species-dependent proportions.
 
 Three of the 29 output filenames are misspelled (`D_secheliaGenesAffectedByT.txt`,
 `D_athabascaGenesAfffectedByTE.txt`, `D_arawakanaGenesAffectedByTe.txt`) and the
@@ -251,6 +257,7 @@ mistaken for evidence.
 | `Dmel_output.tsv` | Its output: 12,151 rows of HOG → *D. melanogaster* symbol. The lab's original was never kept. This rebuild reproduces the lab's *D. arizonae* result exactly, so the two are equivalent at least there |
 | `zenodo-partial-download/annotations_15705949.tar.gz` | An 11 MB partial download of the June 2025 Zenodo annotations, abandoned when Zenodo throttled. Kept because it is the only local trace of that record's contents |
 | `window-rule-analysis/` | The transposons the lab's 3 kb window rule discards, measured across the three species whose inputs survive, plus the script that produced the list. See its own README |
+| `repeat-class-analysis/` | How much of the pipeline's "TE burden" is not a transposable element, measured across all 27 non-empty finished tables. See its own README |
 
 ### `window-rule-analysis/` — the transposons the pipeline never saw
 
@@ -259,6 +266,19 @@ reaching into the window but extending past its edge is dropped however close to
 begins. This directory holds the elements that were dropped:
 `missed_transposons.tsv` (38 associations, 22 Cyp genes, 3 species) and the re-runnable script
 that found them.
+
+### `repeat-class-analysis/` — how much of the "TE burden" is microsatellite
+
+Across all 27 non-empty finished tables (21,409 rows): **70.1% are definitively not
+transposable elements**, 16.8% are classified transposons, 13.0% unclassified. The junk
+fraction is not uniform — it runs from 36.9% (*D. suzukii*) to 90.2% (*D. anomalata*), a
+53-point spread — so it biases rather than merely adding noise. Ranking species by real TEs
+instead of raw hits reorders them (Spearman ρ = 0.597; *D. mojavensis* falls from 1st to
+22nd), and **52% of the presence/absence table Fisher's exact runs on would flip** if the
+repeat class were consulted. Details:
+[`repeat-class-analysis/README.md`](reconstructed/repeat-class-analysis/README.md).
+
+### `window-rule-analysis/` — the transposons the pipeline never saw
 
 The finding that matters: **the rule discards a 4,321 bp LINE/I-Jockey element 650 bp upstream
 of *Cyp6g1* in *D. simulans*, and a 2,129 bp element 1,245 bp upstream of *Cyp6g1* in

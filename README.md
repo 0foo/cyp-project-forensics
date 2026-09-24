@@ -44,10 +44,14 @@ The short version, with the details behind each link:
   7 through Ayush's `NEW_Step_5_…`, and the two do not agree: ReVamp silently drops about 7%
   of orthologous genes. Cross-species comparisons therefore compare tables built two
   different ways.
-- **Several defects in the lab's code demonstrably affect published-shaped numbers** —
-  about 69% of what the pipeline counts as "TE burden" is simple repeats and low-complexity
-  sequence, not transposable elements. See
-  [`docs/pipeline/detailed/04-gaps-and-provenance.md`](docs/pipeline/detailed/04-gaps-and-provenance.md).
+- **Most of what the pipeline calls a transposable element is not one.** Measured across all
+  27 finished species tables: **70.1% of 21,409 rows are definitively not TEs** — 61.8% is
+  `Simple_repeat`, median length 39 bp — and only 16.8% is a classified transposon. The
+  contamination is not uniform (36.9% to 90.2% by species), so it biases rather than adding
+  noise, and **52% of the genes counted as "has a TE nearby" have no genuine transposon near
+  them** — their entry rests entirely on microsatellite hits. Nothing in the pipeline ever
+  reads the repeat class. See
+  [`evidence/reconstructed/repeat-class-analysis/`](evidence/reconstructed/repeat-class-analysis/).
 - **The TE-to-gene rule discards the study's own motivating case.** A transposon must fit
   *entirely* inside a gene's ±3 kb window to be counted, so 71% of elements ≥5 kb that reach a
   window are thrown away — including long elements sitting in the *Cyp6g1* promoter in two

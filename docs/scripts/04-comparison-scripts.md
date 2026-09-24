@@ -247,7 +247,8 @@ are documented in
 
 **Repeat class is never consulted.** `parse_species_gff3` counts every row carrying a
 `Within range of` description, regardless of its `repeat_class` attribute. In the archived
-*D. ananassae* data about 69% of those rows are `Simple_repeat` or `Low_complexity` — not
+finished tables 70.1% of those rows are not transposable elements at all — `Simple_repeat`
+alone is 61.8%, at a median length of 39 bp — not
 transposable elements. See
 [`../pipeline/detailed/04-gaps-and-provenance.md`](../pipeline/detailed/04-gaps-and-provenance.md).
 

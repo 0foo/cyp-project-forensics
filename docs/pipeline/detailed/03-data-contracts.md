@@ -142,7 +142,8 @@ Fields, 0-indexed after whitespace splitting — the indices the lab’s code ac
 - Stage 4 skips any line yielding fewer than 14 whitespace fields, with a warning.
 - Column 10 is the one that matters analytically: it distinguishes `LTR/Gypsy` (a real TE) from
   `Simple_repeat` and `Low_complexity` (not TEs). In the surviving *D. ananassae* result
-  **69% of retained rows are `Simple_repeat` or `Low_complexity`**, and no stage filters them.
+  **70.1% of retained rows across all 27 finished species tables are not transposable
+  elements at all**, and no stage filters them.
   See [`04-gaps-and-provenance.md`](04-gaps-and-provenance.md).
 - These files are large: 39 MB / 297,073 lines for *D. ananassae*.
 
