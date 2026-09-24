@@ -154,15 +154,35 @@ anywhere in the code, and not recorded in any output file.
 scientific parameter hardcoded as a magic number two stages upstream of where it is
 interpreted.
 
-### The overlap test is correct
+### Defect: the test is containment, not overlap
 
-`te_end <= gene_stop AND te_start >= gene_start` — a containment test, not a general
-overlap. A TE that straddles the window boundary is **excluded**. Whether that is intended
-is unclear; standard interval overlap would be `te_start <= stop AND te_end >= start`.
+`te_end <= stop AND te_start >= start` — both ends of the repeat are tested against the
+window, so the **whole element must fit inside it**. Standard interval overlap would be
+`te_start <= stop AND te_end >= start`, with the comparisons the other way round. "Within
+3 kb" here really means "entirely within 3 kb", and an element whose beginning sits well
+inside the window is still discarded if its other end reaches past the edge.
 
-Given 3 kb of padding on each side, the practical difference is small (only elements
-crossing the outer edge of the padded window are affected), but it means "within 3 kb" is
-really "entirely within 3 kb".
+Overlap is the usual criterion in TE work, and the practical difference is **not** small. The
+missing associations were measured directly for the three species whose inputs survive
+(the lab's test reproduces the archived *D. ananassae* count of 900 exactly, so the rule is
+faithfully reproduced first):
+
+| Species | Kept | Would overlap | Lost | Distinct elements |
+|---|---|---|---|---|
+| *D. ananassae* | 900 ✓ | 930 | 30 | 19 |
+| *D. sechellia* | 457 | 468 | 11 | 7 |
+| *D. simulans* | 504 | 521 | 17 | 12 |
+
+The loss is concentrated in long elements — 1.4% of sub-200 bp repeats are dropped, against
+**71% of elements ≥5 kb** — so the script systematically keeps microsatellites and discards
+the long insertions. Worst of all, it discards a 4,321 bp LINE/I-Jockey element sitting 650 bp
+upstream of *Cyp6g1* in *D. simulans*, and a 2,129 bp element 1,245 bp upstream of *Cyp6g1* in
+*D. ananassae* — the exact gene, and the exact promoter position, that the *Accord* case makes
+the study's premise.
+
+Full list, method and caveats:
+[`../../evidence/reconstructed/window-rule-analysis/`](../../evidence/reconstructed/window-rule-analysis/).
+Discussion: [`../pipeline/detailed/04-gaps-and-provenance.md`](../pipeline/detailed/04-gaps-and-provenance.md), D3.
 
 ### Not strand-aware
 
@@ -347,7 +367,13 @@ whoever rebuilds the step elsewhere, in rough order of how much each one moves t
 3. **Emit one row per paralog** for merged loci, instead of collapsing.
 4. `argparse` instead of module-scope literals — three `add_argument` calls each.
 5. Hoist the window computation out of `Locate_TE.py`'s inner loop; fix the guard to `<= 6`.
-6. Make the ±3000 a named constant, then a flag, and write it into the output header.
+6. Make the ±3000 a named constant, then a flag, and write it into the output header — at
+   present nothing in any output file records that a window rule was applied at all, so a
+   reader of the finished tables cannot tell that elements were considered and dropped.
+
+Item 0, ahead of all of these: **switch the window test from containment to overlap**. It is
+the change that alters results most, and the only one that affects whether the study can see
+its own motivating case.
 
 Items 1–3 change results. The archived `DAnasse_TE_Cyp.txt` is the reference to diff any
 reimplementation against — it is the only file that pins down what this stage actually did.

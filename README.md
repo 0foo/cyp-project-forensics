@@ -48,6 +48,12 @@ The short version, with the details behind each link:
   about 69% of what the pipeline counts as "TE burden" is simple repeats and low-complexity
   sequence, not transposable elements. See
   [`docs/pipeline/detailed/04-gaps-and-provenance.md`](docs/pipeline/detailed/04-gaps-and-provenance.md).
+- **The TE-to-gene rule discards the study's own motivating case.** A transposon must fit
+  *entirely* inside a gene's ±3 kb window to be counted, so 71% of elements ≥5 kb that reach a
+  window are thrown away — including long elements sitting in the *Cyp6g1* promoter in two
+  separate species. *Cyp6g1* and its ~7 kb *Accord* insertion are the reason the project
+  exists. The discarded elements are listed in
+  [`evidence/reconstructed/window-rule-analysis/`](evidence/reconstructed/window-rule-analysis/).
 - **Some of it is unrecoverable.** The `config.py` that drove the orthogroup steps, the
   original `Dmel_output.tsv`, a fourth page of the lab log listing per-species family counts:
   gone, and recorded as gone.

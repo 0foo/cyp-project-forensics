@@ -234,6 +234,26 @@ Triggered by: *"organize the to_organize folder … make the repo a little more 
   - Stage numbering: `docs/superseded/simple/` counts four stages, `docs/pipeline/` counts seven (0–6). The mismatch is now stated rather than left to trip people.
   - "Fix:" framing throughout the script docs was changed to "what would have to change", to keep defects as findings.
 
+### 11. The 3 kb window rule (2026-09-24, evening)
+
+Asked whether `Locate_TE.py` captures a transposon whose *beginning* falls within 3 kb of a
+gene, or requires the whole element to be inside the window. Answer: **the whole element**,
+and that turned out to matter more than expected.
+
+- The test is `te_end <= stop AND te_start >= start` — containment, not overlap. All three
+  surviving copies of the script are identical.
+- Reimplemented both tests outside the repository against the three species whose inputs
+  survive. The lab's rule reproduces the archived *D. ananassae* count of 900 exactly, which
+  validates the reimplementation before anything is concluded from it.
+- The loss scales with element length: 1.4% of sub-200 bp repeats dropped, **71% of elements
+  ≥5 kb**. 25 of the 38 lost associations are in the upstream flank.
+- **It discards long elements in the *Cyp6g1* promoter in two separate species** — the gene
+  and the position the *Accord* case makes the study's premise.
+- Recorded as an expanded D3 in `docs/pipeline/detailed/04-gaps-and-provenance.md`, in
+  `docs/scripts/02-te-locating-scripts.md`, and in both top-level READMEs. The list of
+  discarded elements and the script that found it are in
+  `evidence/reconstructed/window-rule-analysis/` — investigation output, not lab material.
+
 ---
 
 ## Where things are now

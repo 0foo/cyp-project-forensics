@@ -214,6 +214,11 @@ ending mid-line — so it is not what the committed results were made from. `fil
 *is* consistent with the full file, and re-running the last two steps from it reproduces the
 committed outputs exactly.
 
+Every table here was produced under the containment window rule described in
+[`reconstructed/window-rule-analysis/`](reconstructed/window-rule-analysis/), which silently
+drops long elements near genes. Nothing in the tables records that, so the counts in them are
+lower bounds of a particular, undocumented kind.
+
 Three of the 29 output filenames are misspelled (`D_secheliaGenesAffectedByT.txt`,
 `D_athabascaGenesAfffectedByTE.txt`, `D_arawakanaGenesAffectedByTe.txt`) and the
 capitalisation of `ByTE`/`ByTe`/`ByT` varies. Those typos are load-bearing evidence of the
@@ -245,6 +250,22 @@ mistaken for evidence.
 | `make_Dmel_output.py` | Written 2026-09-24 to rebuild `Dmel_output.tsv` from the HOG table, using only the standard library |
 | `Dmel_output.tsv` | Its output: 12,151 rows of HOG → *D. melanogaster* symbol. The lab's original was never kept. This rebuild reproduces the lab's *D. arizonae* result exactly, so the two are equivalent at least there |
 | `zenodo-partial-download/annotations_15705949.tar.gz` | An 11 MB partial download of the June 2025 Zenodo annotations, abandoned when Zenodo throttled. Kept because it is the only local trace of that record's contents |
+| `window-rule-analysis/` | The transposons the lab's 3 kb window rule discards, measured across the three species whose inputs survive, plus the script that produced the list. See its own README |
+
+### `window-rule-analysis/` — the transposons the pipeline never saw
+
+`Locate_TE.py` requires a repeat to lie *entirely* inside a gene's ±3 kb window, so an element
+reaching into the window but extending past its edge is dropped however close to the gene it
+begins. This directory holds the elements that were dropped:
+`missed_transposons.tsv` (38 associations, 22 Cyp genes, 3 species) and the re-runnable script
+that found them.
+
+The finding that matters: **the rule discards a 4,321 bp LINE/I-Jockey element 650 bp upstream
+of *Cyp6g1* in *D. simulans*, and a 2,129 bp element 1,245 bp upstream of *Cyp6g1* in
+*D. ananassae*.** *Cyp6g1* and its *Accord* insertion are the case the whole study
+generalises from, and *Accord* is ~7 kb — a size a containment test against a 3 kb flank
+cannot admit. Details and caveats:
+[`window-rule-analysis/README.md`](reconstructed/window-rule-analysis/README.md).
 
 ---
 

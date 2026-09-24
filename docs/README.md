@@ -55,9 +55,10 @@ Where behaviour is inferred rather than established, the text says so.
   genes.
 - About 69% of what the pipeline counts as "TE burden" is simple repeats and low-complexity
   sequence, not transposable elements. Nothing filters on repeat class.
-- The TE-to-gene window is a containment test, not an overlap test, so long elements
-  straddling the window edge — including elements the size of the *Accord* insertion that
-  motivates the whole study — are dropped.
+- The TE-to-gene window is a containment test, not an overlap test, so a transposon must fit
+  entirely inside it: 71% of elements ≥5 kb that reach a window are discarded, including long
+  elements in the *Cyp6g1* promoter in two species. *Cyp6g1* and its ~7 kb *Accord* insertion
+  are the case the study generalises from.
 - Parts of the chain are gone for good: the `config.py` behind the orthogroup steps, the
   original `Dmel_output.tsv`, and a page of the lab log recording per-species family counts.
 

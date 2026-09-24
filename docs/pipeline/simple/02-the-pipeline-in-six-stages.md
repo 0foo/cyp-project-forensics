@@ -174,6 +174,13 @@ as affecting a gene if it falls **within the gene's span extended by 3,000 base 
 end**. That window is meant to catch elements sitting in the promoter, which is exactly where
 the *Cyp6g1* / *Accord* case happened.
 
+> **And it does not do that.** The test requires the element to fit *entirely* inside the
+> window, so a transposon reaching in from outside is discarded however close to the gene it
+> begins. 71% of elements 5 kb or longer that touch a window are thrown away — among them a
+> 4,321 bp element 650 bp upstream of *Cyp6g1* in *D. simulans*, and a 2,129 bp element
+> 1,245 bp upstream of *Cyp6g1* in *D. ananassae*. *Accord* is about 7 kb. See
+> [`../detailed/04-gaps-and-provenance.md`](../detailed/04-gaps-and-provenance.md), D3.
+
 These three scripts were run **by hand in VS Code**, once per species: open the script, paste
 a file path into a specific line, save, click run — three times, with a different path each
 time *(OCR docs 02, 05, 06)*. The hardcoded Windows paths still sitting at the top of the

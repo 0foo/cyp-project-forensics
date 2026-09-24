@@ -149,21 +149,66 @@ Stage 4 de-duplicates on the way in, so the final GFF3 is correct — but any co
 `filtered.gff`, `GenesAffectedByTEs.txt` or `D_*GenesAffectedByTE.txt` directly is inflated by
 roughly 80%. The `AnalysisForAll/` intermediate files have this property.
 
-### D3. The TE window tests containment, not overlap
+### D3. The TE window tests containment, not overlap — **and it discards the study's own motivating case**
 
-`Locate_TE.py` requires the repeat to lie *entirely* within `[gene_start − 3000,
-gene_end + 3000]`. An element straddling the window edge is dropped.
+`Locate_TE.py:31-37` requires the repeat to lie *entirely* within
+`[gene_start − 3000, gene_end + 3000]`:
 
-This is the wrong default for TE work — overlap is the standard criterion — and it biases
-against exactly the long elements most likely to matter. The *Accord* insertion upstream of
-*Cyp6g1*, the case that motivates the whole project, is ~7 kb; an element that size sitting in
-a promoter would be excluded by this test unless it happened to fall wholly inside the window.
+```python
+if cypFields[0] == eleFields[4] and (int(eleFields[6]) <= stop and int(eleFields[5]) >= start):
+```
+
+`eleFields[5]` and `[6]` are the repeat's begin and end, so both ends are tested against the
+window: `te_end <= stop AND te_start >= start`. A standard overlap test would be
+`te_start <= stop AND te_end >= start`, with the comparisons the other way round. **An element
+whose beginning falls well inside the window is still discarded if its other end reaches past
+the edge.** All three surviving copies of the script are identical here.
+
+Overlap is the standard criterion in TE work, and the difference is not cosmetic. Measured on
+the three species whose inputs survive — the lab's test reproduces the archived *D. ananassae*
+row count of 900 exactly, so the rule is faithfully reproduced before anything is concluded:
+
+| Species | Kept (lab's rule) | Would overlap | Associations lost | Distinct elements |
+|---|---|---|---|---|
+| *D. ananassae* | 900 ✓ | 930 | 30 | 19 |
+| *D. sechellia* | 457 | 468 | 11 | 7 |
+| *D. simulans* | 504 | 521 | 17 | 12 |
+
+**The loss scales with element length**, which is what makes it a bias rather than noise
+(*D. ananassae*, over every repeat touching a window):
+
+| Element length | Kept | Dropped | % dropped |
+|---|---|---|---|
+| <200 bp | 787 | 11 | 1.4% |
+| 200–999 bp | 82 | 3 | 3.5% |
+| 1–5 kb | 29 | 11 | 27.5% |
+| **≥5 kb** | **2** | **5** | **71.4%** |
+
+Short repeats fit inside a window; long ones do not. Combined with D1, the pipeline retains
+microsatellites and discards the long elements plausibly capable of carrying regulatory
+sequence. 25 of the 38 lost associations are in the **upstream flank** — the promoter side.
+
+> **The worst case is *Cyp6g1*, in two of the three species tested.** The *Accord* insertion
+> in the *Cyp6g1* promoter is the textbook case this whole project generalises from. In
+> *D. simulans* a 4,321 bp LINE/I-Jockey element at 3.9% divergence — young, recently active —
+> ends **650 bp upstream of Cyp6g1** and is discarded because its far end sits 1,970 bp
+> outside the window. In *D. ananassae* a 2,129 bp DNA/hAT-Ac element ends 1,245 bp upstream
+> of *Cyp6g1* and is discarded for the same reason. *Accord* itself is ~7 kb: an insertion of
+> that size in a promoter cannot satisfy a containment test against a 3 kb flank unless the
+> gene is long enough to swallow it. **The pipeline is structurally unable to detect the
+> insertion type that motivates it**, except by accident.
+
+The full list of discarded elements, the script that produced it, and its caveats are in
+[`../../../evidence/reconstructed/window-rule-analysis/`](../../../evidence/reconstructed/window-rule-analysis/).
 
 Because stage 4 writes the association into `Description=Within range of …` and stage 6 reads
-it from there, **this rule is fixed at stage 3 and cannot be revisited downstream.**
+it from there, **this rule is fixed at stage 3 and cannot be revisited downstream.** Nothing in
+any output file records that the rule was applied, so a reader of the finished tables has no
+way to know an element was considered and dropped.
 
 Related, minor: `start` goes negative for genes within 3 kb of the start of a sequence. Harmless
-in practice, but the window is silently asymmetric for those genes.
+in practice, but the window is silently asymmetric for those genes. Note also that the window is
+the gene's *span* ±3 kb, so it widens with gene length rather than being a fixed neighbourhood.
 
 ### D4. The `D`-prefix skip drops five real entries
 
